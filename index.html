@@ -1,91 +1,288 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurovant Technology</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08070f">
+  <meta name="description" content="Neurovant Technology explores technological innovation for attention, movement, and everyday routines.">
+  <title>Neurovant Technology &mdash; Technological innovation</title>
+  <link rel="icon" href="/neurovant-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/styles/site.css">
+  <link rel="stylesheet" href="/src/styles/polish.css">
+  <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+  <div class="viewport-glow" aria-hidden="true"></div>
+  <div class="particle-wave" data-particle-wave aria-hidden="true">
+    <canvas class="particle-wave__canvas"></canvas>
+    <span class="particle-wave__grain"></span>
+  </div>
 
-    <!-- Galaxy + Stars -->
-    <div id="galaxy"></div>
-    <canvas id="starfield"></canvas>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Shooting Star -->
-    <div id="shootingStar">
-        <div class="tail"></div>
+  <header class="site-header" data-header>
+    <div class="nav-shell">
+      <a class="brand" href="#top" aria-label="Neurovant Technology home">
+        <img class="brand-logo" src="/neurovant-logo.png" alt="Neurovant Technology logo">
+        <span class="brand-name">Neurovant <span>Technology</span></span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+        <span class="sr-only">Open navigation</span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+      <nav class="nav-links" id="primary-navigation" aria-label="Primary navigation" data-nav>
+        <a href="#about">About</a>
+        <a href="#principles">How we work</a>
+        <div class="nav-dropdown" data-project-dropdown>
+          <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="project-menu" data-project-toggle>
+            Projects
+            <span class="nav-dropdown__chevron" aria-hidden="true"></span>
+          </button>
+          <div class="nav-dropdown__menu" id="project-menu">
+            <a class="nav-dropdown__item" href="/projects/neurofit/">
+              <span class="nav-dropdown__label">Neurofit</span>
+              <span class="nav-dropdown__meta">Early exploration</span>
+            </a>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <a class="button button--secondary button--compact" href="#contact">Join the list</a>
+          <a class="button button--secondary button--compact" href="https://discord.gg/NQ3qjFDCMn" target="_blank" rel="noopener noreferrer">Join Our Discord</a>
+          <a class="button button--secondary button--compact" href="https://neurovantstore.com/" target="_blank" rel="noopener noreferrer">Browse Our Shop</a>
+        </div>
+      </nav>
     </div>
+  </header>
 
-    <!-- HERO SECTION -->
-    <header class="hero">
-        <img src="Logo.png"
-             class="hero-logo"
-             alt="Neurovant Technology Logo">
-    </header>
+  <main id="main">
+    <section class="hero-section" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid section-shell">
+        <div class="hero-copy" data-reveal>
+          <span class="hero-kicker">Neurovant Technology / early-stage studio</span>
+          <h1 id="hero-title">Technological<br><span>innovation.</span></h1>
+          <p class="hero-description">We're exploring digital tools for people trying to protect their attention, move through screen-heavy days, and make ordinary routines easier &mdash; without another loud thing asking for their time.</p>
+          <div class="hero-actions">
+            <a class="button button--primary" href="/projects/neurofit/">Explore Neurofit</a>
+            <a class="text-link" href="#team">Meet the team</a>
+          </div>
+        </div>
 
-    <!-- STATUS (1st) -->
-    <section class="status-section interactive-box">
-        <h2>Development Status</h2>
-        <div id="status-box" class="status-box">Loading status...</div>
+      </div>
+
+      <div class="hero-divider" data-reveal aria-hidden="true"></div>
     </section>
 
-    <!-- WAITLIST (2nd) -->
-    <section class="waitlist-section interactive-box">
-        <h2>Join the Neurovant Waitlist</h2>
+    <section class="current-experiment" id="current-experiment" aria-labelledby="experiment-title">
+      <div class="section-shell">
+        <div class="current-experiment__heading" data-reveal>
+          <div>
+            <span class="section-label">Current experiment / Neurofit</span>
+            <h2 id="experiment-title">Can a tool make room for <span>one more good habit?</span></h2>
+          </div>
+          <p>We're starting with a practical question: can digital support for attention and movement fit around a person's day instead of taking it over?</p>
+        </div>
 
-        <iframe data-tally-src="https://tally.so/r/ODErb8"
-                loading="lazy"
-                width="100%"
-                height="500"
-                frameborder="0"
-                marginheight="0"
-                marginwidth="0"
-                allow="fullscreen; clipboard-write">
-        </iframe>
+        <div class="current-experiment__grid">
+          <div class="current-experiment__copy" data-reveal>
+            <div class="experiment-block">
+              <span class="content-label">The problem</span>
+              <h3>Screen-heavy days make it easy to lose track of attention and movement.</h3>
+              <p>We keep coming back to the gap between knowing a routine would help and finding a way to make room for it.</p>
+            </div>
+            <div class="experiment-block">
+              <span class="content-label">What we're learning</span>
+              <p>We're talking through the problem, sketching rough prototypes, and deciding whether there is a small, useful tool here. Neurofit is an early exploration: there is nothing to download and no finished product yet.</p>
+            </div>
+            <a class="text-link experiment-link" href="/projects/neurofit/">Read the Neurofit notes</a>
+          </div>
+
+        </div>
+      </div>
     </section>
 
-    <!-- Tally Script -->
-    <script async src="https://tally.so/widgets/embed.js"></script>
-
-    <!-- USER PROBLEM (3rd) -->
-    <section class="user-problem-section interactive-box">
-        <h2>User Problem</h2>
-        <p>
-            The modern world is facing a growing issue: mass obesity and excessive screen time. People spend
-            hours glued to their devices, leading to reduced productivity, chronic laziness, and constant fatigue.
-            The average person’s screentime‑to‑exercise ratio is dangerously unbalanced.
-        </p>
-        <p>
-            Neurofit solves this by requiring users to complete a set number of exercises before they can return
-            to using their electronic device. When used with discipline and intention, Neurofit can help eliminate
-            the cycle of inactivity, reduce obesity, and rebuild healthy habits.
-        </p>
+    <section class="belief-section" id="about" aria-labelledby="belief-title">
+      <div class="section-shell belief-grid">
+        <div data-reveal>
+          <span class="section-label">What we believe</span>
+          <h2 id="belief-title">Technology should<br><span>fit into your day.</span></h2>
+        </div>
+        <div class="belief-copy" data-reveal>
+          <p>Neurovant is two founders exploring small, practical ways technology might support attention, movement, and everyday routines.</p>
+          <p>We care less about adding more to a tool and more about whether it earns a place in a real routine. If it creates another demand, it needs a good reason to be there.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- ABOUT (4th) -->
-    <section class="about interactive-box">
-        <h2>About Neurovant</h2>
-        <p>
-            Neurovant Technology is a next‑generation development studio focused on building highly advanced,
-            AI‑powered mobile applications.
-        </p>
+    <section class="process-section" id="principles" aria-labelledby="process-title">
+      <div class="section-shell">
+        <div class="process-heading" data-reveal>
+          <div>
+            <span class="section-label">How we work</span>
+            <h2 id="process-title">Three checks before<br><span>we keep going.</span></h2>
+          </div>
+          <p>This is the order we try to follow when an idea starts to feel tempting.</p>
+        </div>
+
+        <ol class="process-list">
+          <li class="process-step" data-reveal>
+            <span class="process-step__number">01</span>
+            <div>
+              <h3>Ask first.</h3>
+              <p>Start with the problem a person actually has, not the feature we want to build.</p>
+            </div>
+            <span class="process-step__next">Then ask what matters</span>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-step__number">02</span>
+            <div>
+              <h3>Earn its place.</h3>
+              <p>A product should make one part of a day easier. Otherwise, it's just more noise.</p>
+            </div>
+            <span class="process-step__next">Then keep it small</span>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-step__number">03</span>
+            <div>
+              <h3>People decide.</h3>
+              <p>The person using the tool should understand what it does and choose how to use it.</p>
+            </div>
+            <span class="process-step__next">Then let it go</span>
+          </li>
+        </ol>
+      </div>
     </section>
 
-    <!-- PROJECT (5th) -->
-    <section class="project interactive-box">
-        <h2>Flagship Project: AI Exercise Enforcement System</h2>
-        <p>
-            Our first major development is an AI‑driven exercise enforcement system that requires users to
-            complete physical activity — such as push‑ups — before unlocking or accessing certain features.
-        </p>
+    <section class="team-section" id="team" aria-labelledby="team-title">
+      <div class="section-shell">
+        <div class="team-heading" data-reveal>
+          <div>
+            <span class="section-label">People behind the work</span>
+            <h2 id="team-title">Small team.<br><span>Open work.</span></h2>
+          </div>
+        </div>
+
+        <ul class="team-grid" aria-label="Neurovant Technology team">
+          <li data-reveal>
+            <a class="founder-card" href="https://discord.com/users/1300212275835043881" target="_blank" rel="noopener noreferrer" aria-label="Open Enosh.tech's Discord profile in a new tab" data-founder-id="1300212275835043881">
+              <span class="founder-card__avatar">
+                <img src="/founders/enosh-tech.png" alt="" width="96" height="96" loading="lazy">
+              </span>
+              <span class="founder-card__copy">
+                <span class="founder-card__role">Founder</span>
+                <strong>enosh.tech</strong>
+                <span>@scienceman_pro</span>
+              </span>
+              <span class="founder-card__link" aria-hidden="true">Discord profile</span>
+            </a>
+          </li>
+
+          <li data-reveal>
+            <a class="founder-card" href="https://discord.com/users/1480253947984740393" target="_blank" rel="noopener noreferrer" aria-label="Open Jackson.tech's Discord profile in a new tab" data-founder-id="1480253947984740393">
+              <span class="founder-card__avatar">
+                <img src="/founders/jackson-tech.png" alt="" width="96" height="96" loading="lazy">
+              </span>
+              <span class="founder-card__copy">
+                <span class="founder-card__role">Founder</span>
+                <strong>Jackson.tech</strong>
+                <span>@jacksonkarli.</span>
+              </span>
+              <span class="founder-card__link" aria-hidden="true">Discord profile</span>
+            </a>
+          </li>
+
+          <li data-reveal>
+            <a class="founder-card" href="https://discord.com/users/1033353984267800576" target="_blank" rel="noopener noreferrer" aria-label="Open SPOONFAM's Discord profile in a new tab" data-founder-id="1033353984267800576">
+              <span class="founder-card__avatar">
+                <img src="/founders/spoonfam.png" alt="" width="96" height="96" loading="lazy">
+              </span>
+              <span class="founder-card__copy">
+                <span class="founder-card__role">Developer</span>
+                <strong>SPOONFAM</strong>
+                <span>@spoonfam</span>
+              </span>
+              <span class="founder-card__link" aria-hidden="true">Discord profile</span>
+            </a>
+          </li>
+
+          <li data-reveal>
+            <a class="founder-card" href="https://discord.com/users/1204912897499598941" target="_blank" rel="noopener noreferrer" aria-label="Open mathewingtonjsebaarionkingcrow's Discord profile in a new tab" data-founder-id="1204912897499598941">
+              <span class="founder-card__avatar">
+                <img src="/founders/mathewington.png" alt="" width="96" height="96" loading="lazy">
+              </span>
+              <span class="founder-card__copy">
+                <span class="founder-card__role">Team member</span>
+                <strong>mathewingtonjsebaarionkingcrow</strong>
+                <span>@mathewingtonjsebaarionkingcrow</span>
+              </span>
+              <span class="founder-card__link" aria-hidden="true">Discord profile</span>
+            </a>
+          </li>
+
+          <li data-reveal>
+            <a class="founder-card" href="https://discord.com/users/924841673765306418" target="_blank" rel="noopener noreferrer" aria-label="Open fire_onfire's Discord profile in a new tab" data-founder-id="924841673765306418">
+              <span class="founder-card__avatar">
+                <img src="/founders/fire-onfire.png" alt="" width="96" height="96" loading="lazy">
+              </span>
+              <span class="founder-card__copy">
+                <span class="founder-card__role">Marketer</span>
+                <strong>fire_onfire</strong>
+                <span>@fire_onfire</span>
+              </span>
+              <span class="founder-card__link" aria-hidden="true">Discord profile</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </section>
 
-    <!-- FOOTER (6th) -->
-    <footer class="interactive-box">
-        <p>© 2026 Neurovant Technology — Applied AI Division</p>
-    </footer>
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="section-shell contact-grid">
+        <div class="contact-copy" data-reveal>
+          <span class="section-label">Follow the work</span>
+          <h2 id="contact-title">Want the short version<br><span>as we work?</span></h2>
+          <p>We'd share an occasional note when there is a useful prototype, a decision worth explaining, or something concrete to show. This form is a local demo and does not send or store submissions.</p>
+        </div>
+        <div class="contact-action" data-reveal>
+          <form class="contact-form" data-contact-form novalidate>
+            <label for="email">Email address</label>
+            <p class="form-help" id="email-help">Only when there is something concrete to share.</p>
+            <div class="contact-control">
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-help form-status signup-note" aria-invalid="false">
+              <button class="button button--primary" type="submit">Join the list</button>
+            </div>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            <p class="privacy-note" id="signup-note"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <script src="script.js"></script>
+  <footer class="site-footer" id="footer">
+    <div class="section-shell">
+      <div class="footer-main">
+        <a class="brand brand--footer" href="#top" aria-label="Back to top">
+          <img class="brand-logo" src="/neurovant-logo.png" alt="Neurovant Technology logo">
+          <span class="brand-name">Neurovant <span>Technology</span></span>
+        </a>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#about">About</a>
+          <a href="#principles">How we work</a>
+          <a href="/projects/neurofit/">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year="2026">2026</span> Neurovant Technology</span>
+        <span>Independent team.</span>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

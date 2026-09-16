@@ -1,0 +1,48 @@
+:root {
+  color-scheme: dark;
+  --color-bg: #08070f;
+  --color-bg-deep: #05040a;
+  --color-surface: #100d1b;
+  --color-surface-raised: #171329;
+  --color-surface-soft: #201a38;
+  --color-text: #f5f1ff;
+  --color-text-soft: #d2cde1;
+  --color-muted: #aaa3bd;
+  --color-faint: #746d87;
+  --color-line: rgba(221, 213, 255, 0.15);
+  --color-line-strong: rgba(226, 219, 255, 0.28);
+  --color-accent: #b5a5ff;
+  --color-accent-bright: #d7ceff;
+  --color-accent-blue: #9f94ed;
+  --color-frame: rgba(203, 191, 255, 0.32);
+  --color-frame-glow: rgba(177, 157, 255, 0.12);
+  --color-success: #80c59f;
+  --color-success-bg: rgba(79, 155, 111, 0.12);
+
+  --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: clamp(2.75rem, 5vw, 5rem);
+  --space-7: clamp(4.5rem, 8vw, 8rem);
+  --space-8: clamp(6rem, 12vw, 12rem);
+
+  --content-max: 88rem;
+  --content-narrow: 72rem;
+  --page-gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --radius-sm: 0.625rem;
+  --radius-md: 1.125rem;
+  --radius-lg: 2rem;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
+  --spring-soft: cubic-bezier(0.16, 1.15, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-base: 480ms;
+  --duration-slow: 900ms;
+}

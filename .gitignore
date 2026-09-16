@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.qa-*/
+.qa-*.png
+.qa-*.mjs
+index.concurrent-backup.html

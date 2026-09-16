@@ -1,0 +1,21 @@
+{
+  "name": "neurovant-landing-page",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit --allowJs --checkJs --module ESNext --moduleResolution Bundler --lib DOM,DOM.Iterable,ES2022 --target ES2022 --skipLibCheck src/main.js vite.config.js eslint.config.js",
+    "check": "npm run lint && npm run typecheck && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.10.0",
+    "globals": "17.12.0",
+    "typescript": "5.9.2",
+    "vite": "8.3.0"
+  }
+}
