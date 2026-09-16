@@ -369,11 +369,12 @@ contactForm?.addEventListener('input', () => {
   }
 });
 
-contactForm?.addEventListener('submit', (event) => {
+contactForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!(contactForm instanceof HTMLFormElement)) return;
   const email = contactForm.querySelector('input[type="email"]');
   if (!(email instanceof HTMLInputElement)) return;
+  const submitButton = contactForm.querySelector('button[type="submit"]');
 
   const value = email.value.trim();
   if (!value) {
@@ -394,8 +395,39 @@ contactForm?.addEventListener('submit', (event) => {
 
   email.value = value;
   email.setAttribute('aria-invalid', 'false');
-  contactForm.dataset.formState = 'success';
-  setFormMessage('Demo complete - your email is valid. Nothing was sent or stored.', 'success');
+  contactForm.dataset.formState = 'pending';
+  contactForm.setAttribute('aria-busy', 'true');
+  setFormMessage('Joining the list…', 'pending');
+
+  let originalButtonLabel = 'Join the list';
+  if (submitButton instanceof HTMLButtonElement) {
+    originalButtonLabel = submitButton.textContent?.trim() || originalButtonLabel;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Joining…';
+  }
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { Accept: 'application/json' },
+    });
+
+    if (!response.ok) throw new Error('Form submission failed.');
+
+    contactForm.reset();
+    contactForm.dataset.formState = 'success';
+    setFormMessage("You're on the list. Thanks for joining us.", 'success');
+  } catch {
+    contactForm.dataset.formState = 'error';
+    setFormMessage('We could not save your email. Please try again.', 'error');
+  } finally {
+    contactForm.removeAttribute('aria-busy');
+    if (submitButton instanceof HTMLButtonElement) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonLabel;
+    }
+  }
 });
 
 document.querySelectorAll('[data-year]').forEach((year) => {

@@ -246,18 +246,19 @@
         <div class="contact-copy" data-reveal>
           <span class="section-label">Follow the work</span>
           <h2 id="contact-title">Want the short version<br><span>as we work?</span></h2>
-          <p>We'd share an occasional note when there is a useful prototype, a decision worth explaining, or something concrete to show. This form is a local demo and does not send or store submissions.</p>
+          <p>We'd share an occasional note when there is a useful prototype, a decision worth explaining, or something concrete to show.</p>
         </div>
         <div class="contact-action" data-reveal>
-          <form class="contact-form" data-contact-form novalidate>
+          <form class="contact-form" data-contact-form action="https://formspree.io/f/mqpazlvw" method="POST" novalidate>
             <label for="email">Email address</label>
             <p class="form-help" id="email-help">Only when there is something concrete to share.</p>
             <div class="contact-control">
               <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-help form-status signup-note" aria-invalid="false">
               <button class="button button--primary" type="submit">Join the list</button>
             </div>
+            <input type="hidden" name="_subject" value="New Neurovant waitlist signup">
             <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-            <p class="privacy-note" id="signup-note"></p>
+            <p class="privacy-note" id="signup-note">Your email will only be used for Neurovant updates.</p>
           </form>
         </div>
       </div>
