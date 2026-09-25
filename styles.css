@@ -2542,3 +2542,222 @@ h2 {
         stroke-dashoffset: 0;
     }
 }
+
+/* ==========================================================
+NEUROFIT PERFORMANCE PATCH v1.0
+Paste at VERY END of EXISTING CSS
+========================================================== */
+ 
+/* ---------- rendering containment ---------- */
+ 
+.pipeline-visual,
+.vision-surface,
+.control-visual,
+.summary-composition,
+.neurofit-config,
+.permission-card {
+contain: layout paint;
+}
+ 
+/* ---------- atmosphere ---------- */
+ 
+#galaxy::before {
+display: none;
+}
+ 
+#galaxy::after {
+opacity: .18;
+}
+ 
+#starfield {
+opacity: .24;
+}
+ 
+#shootingStar {
+box-shadow:
+0 0 4px rgba(255,255,255,.95),
+0 0 12px rgba(117,191,255,.35);
+}
+ 
+.particle {
+box-shadow: 0 0 3px var(--cyan);
+}
+ 
+/* ---------- hero ---------- */
+ 
+.hero-logo {
+filter: drop-shadow(0 0 10px rgba(0,170,255,.35));
+}
+ 
+/* ---------- major containers ---------- */
+ 
+.pipeline-visual,
+.vision-surface,
+.control-visual,
+.summary-composition {
+box-shadow:
+0 16px 40px rgba(0,0,0,.24),
+inset 0 1px 0 rgba(255,255,255,.04);
+}
+ 
+.neurofit-config {
+box-shadow:
+0 16px 40px rgba(0,0,0,.28),
+0 0 24px rgba(146,85,255,.04),
+inset 0 1px 0 rgba(255,255,255,.05);
+}
+ 
+/* ---------- expensive blur reduction ---------- */
+ 
+.pipeline-visual::before {
+filter: blur(8px);
+}
+ 
+.vision-readout {
+backdrop-filter: none;
+background: rgba(10,8,20,.88);
+}
+ 
+/* ---------- remove unnecessary layers ---------- */
+ 
+.permission-card::before {
+display: none;
+}
+ 
+.vision-grid::after {
+display: none;
+}
+ 
+/* ---------- lighter glow system ---------- */
+ 
+.signal-state i,
+.timeline-status i,
+.config-footer i,
+.metric-note i,
+.vision-topline i,
+.topbar-led,
+.note-dot,
+.valid-dot,
+.app-choice i {
+box-shadow: 0 0 4px currentColor;
+}
+ 
+.pipeline-rail-fill,
+.exchange-line span,
+.control-track-line i,
+.readout-line i {
+box-shadow: 0 0 6px rgba(135,237,255,.6);
+}
+ 
+.pipeline-pulse {
+box-shadow:
+0 0 0 3px rgba(255,94,183,.08),
+0 0 10px rgba(255,94,183,.42);
+}
+ 
+.permission-orb {
+box-shadow:
+0 0 0 5px rgba(255,94,183,.03),
+0 0 16px rgba(255,94,183,.12);
+}
+ 
+.exchange-dot,
+.pipeline-stage.is-active .stage-icon {
+box-shadow:
+0 0 12px rgba(135,237,255,.12);
+}
+ 
+/* ---------- smoother animations ---------- */
+ 
+.reveal {
+transition:
+opacity 500ms ease,
+transform 600ms ease;
+}
+ 
+.pipeline-stage,
+.exchange-step,
+.control-app,
+.permission-orb,
+.stage-icon {
+transition-duration: 180ms;
+}
+ 
+/* ---------- scanline less costly ---------- */
+ 
+.vision-surface.is-visible .vision-scanline {
+animation: scan 8s linear infinite;
+}
+ 
+.vision-scanline {
+box-shadow: 0 0 8px rgba(135,237,255,.5);
+}
+ 
+/* ---------- grid reduction ---------- */
+ 
+.vision-grid {
+opacity: .30;
+}
+ 
+/* ---------- orbit reduction ---------- */
+ 
+.goal-orbit {
+opacity: .65;
+}
+ 
+/* ---------- scroll effects ---------- */
+ 
+.pipeline-pulse,
+.exchange-line i,
+.reveal,
+.activity-bars i,
+.pose-bones {
+transform: translateZ(0);
+}
+ 
+/* ---------- mobile ---------- */
+ 
+@media (max-width:768px){
+ 
+.goal-orbit-two {
+display:none;
+}
+ 
+.particle {
+display:none;
+}
+ 
+#starfield {
+opacity:.16;
+}
+ 
+.vision-grid {
+opacity:.18;
+}
+}
+ 
+/* ---------- small phones ---------- */
+ 
+@media (max-width:560px){
+ 
+.pipeline-visual,
+.vision-surface,
+.control-visual,
+.summary-composition,
+.neurofit-config {
+box-shadow:
+0 8px 24px rgba(0,0,0,.2),
+inset 0 1px 0 rgba(255,255,255,.03);
+}
+}
+ 
+/* ---------- reduced motion ---------- */
+ 
+@media (prefers-reduced-motion: reduce){
+ 
+#shootingStar,
+.particle,
+.vision-scanline {
+animation:none !important;
+}
+}
