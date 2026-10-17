@@ -322,7 +322,7 @@ main,
   height: clamp(2.4rem, 3.5vw, 3.2rem);
   flex: 0 0 auto;
   border-radius: 0;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .brand-name {
