@@ -129,7 +129,12 @@ function initParticleWave() {
     downY: 0.48,
   };
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  const frameInterval = 1000 / 30;
+  const lowPowerDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
+    || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  let frameInterval = 1000 / (lowPowerDevice ? 24 : 30);
+  let detailScale = 1;
+  let qualityLevel = 0;
+  let slowFrameCount = 0;
   const pointerTimeConstant = coarsePointer ? 44 : 28;
   const interactionRadius = 0.26;
   const pulseDuration = 1.2;
@@ -175,13 +180,13 @@ function initParticleWave() {
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    pixelRatio = Math.min(window.devicePixelRatio || 1, 1);
+    pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice || detailScale < 1 ? 0.85 : 1);
     canvas.width = Math.max(1, Math.floor(width * pixelRatio));
     canvas.height = Math.max(1, Math.floor(height * pixelRatio));
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-    columns = Math.max(40, Math.min(240, Math.round(width / 12)));
-    rowSpacing = Math.max(16, Math.min(24, Math.round(height / 62)));
+    columns = Math.max(40, Math.min(240, Math.round((width / 12) * detailScale)));
+    rowSpacing = Math.max(16, Math.min(32, Math.round((height / 62) / detailScale)));
     rows = Math.ceil(height / rowSpacing) + 5;
     normalizedX = new Float32Array(columns);
     phases = new Float32Array(columns);
@@ -218,7 +223,13 @@ function initParticleWave() {
     const colorPaths = palette.map(() => [new Path2D(), new Path2D(), new Path2D()]);
     const sheenPath = new Path2D();
     const pointerPath = new Path2D();
-    const pulsePaths = clickRipples.map(() => new Path2D());
+    const ripples = clickRipples.map((clickRipple) => ({
+      x: clickRipple.x * width,
+      y: clickRipple.y * height,
+      age: clickRipple.age,
+      radius: 0.035 + Math.min(clickRipple.age, 1.05) * 0.47,
+      path: new Path2D(),
+    }));
     const baseSize = Math.max(2.6, Math.min(4.6, rowSpacing * 0.17));
     const pointerInfluenceActive = pointer.active || pointer.down;
 
@@ -251,8 +262,11 @@ function initParticleWave() {
         if (pointerInfluenceActive) {
           distanceX = baseX - pointerX;
           distanceY = baseY - pointerY;
-          distance = Math.hypot(distanceX * inverseWidth, distanceY * inverseHeight);
-          safeDistance = Math.max(Math.hypot(distanceX, distanceY), 1);
+          const radius = pointer.down ? 0.3 : interactionRadius;
+          if (Math.abs(distanceX) < width * radius && Math.abs(distanceY) < height * radius) {
+            distance = Math.hypot(distanceX * inverseWidth, distanceY * inverseHeight);
+            if (distance < radius) safeDistance = Math.max(Math.hypot(distanceX, distanceY), 1);
+          }
         }
         const shape = (Math.floor(column / 3) + Math.floor(row / 3)) % 3;
         const phase = phases[column] + row * 0.19;
@@ -270,13 +284,15 @@ function initParticleWave() {
         let ringPushX = 0;
         let ringPushY = 0;
         let ripple = 0;
-        clickRipples.forEach((clickRipple, index) => {
-          const rippleX = baseX - clickRipple.x * width;
-          const rippleY = baseY - clickRipple.y * height;
+        for (let index = 0; index < ripples.length; index += 1) {
+          const rippleInfo = ripples[index];
+          const rippleX = baseX - rippleInfo.x;
+          const rippleY = baseY - rippleInfo.y;
+          if (Math.abs(rippleX * inverseWidth) > rippleInfo.radius + 0.06
+            || Math.abs(rippleY * inverseHeight) > rippleInfo.radius + 0.06) continue;
           const rippleDistance = Math.hypot(rippleX * inverseWidth, rippleY * inverseHeight);
-          const rippleRadius = 0.035 + Math.min(clickRipple.age, 1.05) * 0.47;
-          const ringDistance = Math.abs(rippleDistance - rippleRadius);
-          const strength = Math.exp(-(ringDistance * ringDistance) / 0.0008) * Math.exp(-clickRipple.age * 1.25);
+          const ringDistance = Math.abs(rippleDistance - rippleInfo.radius);
+          const strength = Math.exp(-(ringDistance * ringDistance) / 0.0008) * Math.exp(-rippleInfo.age * 1.25);
 
           if (strength > ringInfluence) {
             ringInfluence = strength;
@@ -284,11 +300,11 @@ function initParticleWave() {
             const push = strength * 24;
             ringPushX = rippleX / safeRippleDistance * push;
             ringPushY = rippleY / safeRippleDistance * push;
-            ripple = Math.sin((rippleDistance - rippleRadius) * 86 + phase) * strength * 4;
+            ripple = Math.sin((rippleDistance - rippleInfo.radius) * 86 + phase) * strength * 4;
           }
 
-          if (strength > 0.22) addShape(pulsePaths[index], shape, baseX + waveX, baseY + waveY, baseSize * 1.16);
-        });
+          if (strength > 0.22) addShape(rippleInfo.path, shape, baseX + waveX, baseY + waveY, baseSize * 1.16);
+        }
         const influence = Math.max(hoverInfluence, holdInfluence, ringInfluence);
         const pointerPush = hoverInfluence * 5 + holdInfluence * 18;
         const x = baseX + waveX + distanceX / safeDistance * pointerPush + ringPushX;
@@ -334,18 +350,15 @@ function initParticleWave() {
       context.fill(pointerPath);
     }
 
-    clickRipples.forEach((clickRipple, index) => {
-      const rippleX = clickRipple.x * width;
-      const rippleY = clickRipple.y * height;
-      const rippleRadius = 0.035 + Math.min(clickRipple.age, 1.05) * 0.47;
-      const pulseGlow = context.createRadialGradient(rippleX, rippleY, 0, rippleX, rippleY, Math.min(width, height) * rippleRadius);
+    ripples.forEach((ripple) => {
+      const pulseGlow = context.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, Math.min(width, height) * ripple.radius);
       pulseGlow.addColorStop(0, 'rgba(255, 245, 255, 0.08)');
       pulseGlow.addColorStop(0.65, 'rgba(235, 100, 236, 0.3)');
       pulseGlow.addColorStop(0.88, 'rgba(142, 132, 255, 0.52)');
       pulseGlow.addColorStop(1, 'rgba(117, 132, 255, 0)');
       context.globalAlpha = 0.9;
       context.fillStyle = pulseGlow;
-      context.fill(pulsePaths[index]);
+      context.fill(ripple.path);
     });
 
     context.globalAlpha = 1;
@@ -370,7 +383,20 @@ function initParticleWave() {
     const pointerEase = 1 - Math.exp(-delta / pointerTimeConstant);
     pointer.currentX += (pointer.targetX - pointer.currentX) * pointerEase;
     pointer.currentY += (pointer.targetY - pointer.currentY) * pointerEase;
+    const drawStarted = performance.now();
     draw();
+    if (performance.now() - drawStarted > frameInterval * 0.82) {
+      slowFrameCount += 1;
+      if (slowFrameCount >= 8 && qualityLevel < 2) {
+        qualityLevel += 1;
+        detailScale = qualityLevel === 1 ? 0.82 : 0.68;
+        frameInterval = Math.max(frameInterval, 1000 / (qualityLevel === 1 ? 24 : 20));
+        slowFrameCount = 0;
+        resize();
+      }
+    } else {
+      slowFrameCount = 0;
+    }
     animationId = requestAnimationFrame(renderFrame);
   }
 
