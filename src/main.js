@@ -129,16 +129,24 @@ function initParticleWave() {
     downY: 0.48,
   };
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  const lowPowerDevice = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4)
-    || (navigator.deviceMemory && navigator.deviceMemory <= 4);
-  let frameInterval = 1000 / (lowPowerDevice ? 24 : 30);
-  let detailScale = 1;
+  const hardwareCores = navigator.hardwareConcurrency || 0;
+  const deviceMemoryGb = navigator.deviceMemory || 0;
+  const lowPowerDevice = (hardwareCores > 0 && hardwareCores <= 4)
+    || (deviceMemoryGb > 0 && deviceMemoryGb <= 4);
+  const highPowerDevice = hardwareCores >= 12 || (hardwareCores >= 8 && deviceMemoryGb >= 8);
+  const deviceProfile = lowPowerDevice
+    ? { detail: 0.74, fps: 24, pixelRatio: 0.8, maxRipples: 4 }
+    : highPowerDevice
+      ? { detail: 1, fps: 30, pixelRatio: 1, maxRipples: 8 }
+      : { detail: 0.88, fps: 30, pixelRatio: 0.9, maxRipples: 6 };
+  let frameInterval = 1000 / deviceProfile.fps;
+  let detailScale = deviceProfile.detail;
   let qualityLevel = 0;
   let slowFrameCount = 0;
   const pointerTimeConstant = coarsePointer ? 44 : 28;
   const interactionRadius = 0.26;
   const pulseDuration = 1.2;
-  const maxClickRipples = 8;
+  const maxClickRipples = deviceProfile.maxRipples;
   const tau = Math.PI * 2;
   let width = 0;
   let height = 0;
@@ -180,7 +188,8 @@ function initParticleWave() {
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice || detailScale < 1 ? 0.85 : 1);
+    const pixelRatioCap = qualityLevel ? Math.min(deviceProfile.pixelRatio, 0.85) : deviceProfile.pixelRatio;
+    pixelRatio = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     canvas.width = Math.max(1, Math.floor(width * pixelRatio));
     canvas.height = Math.max(1, Math.floor(height * pixelRatio));
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
@@ -389,7 +398,7 @@ function initParticleWave() {
       slowFrameCount += 1;
       if (slowFrameCount >= 8 && qualityLevel < 2) {
         qualityLevel += 1;
-        detailScale = qualityLevel === 1 ? 0.82 : 0.68;
+        detailScale = deviceProfile.detail * (qualityLevel === 1 ? 0.86 : 0.72);
         frameInterval = Math.max(frameInterval, 1000 / (qualityLevel === 1 ? 24 : 20));
         slowFrameCount = 0;
         resize();
