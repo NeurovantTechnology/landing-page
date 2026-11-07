@@ -8,6 +8,9 @@ const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const anchorLinks = [...document.querySelectorAll('a[href^="#"]')];
 const contentLinks = navLinks;
 const sections = [...document.querySelectorAll('main section[id]')];
+const logoScrollTrack = document.querySelector('[data-logo-scroll-track]');
+const logoIntro = document.querySelector('[data-logo-intro]');
+const logoFill = document.querySelector('[data-logo-fill]');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const mobileNavigation = window.matchMedia('(max-width: 50rem)');
 const revealItems = [...document.querySelectorAll('[data-reveal]')];
@@ -55,7 +58,12 @@ mobileNavigation.addEventListener?.('change', (event) => {
 });
 
 function updateHeader() {
-  header?.classList.toggle('is-scrolled', window.scrollY > 24);
+  const trackRect = logoScrollTrack instanceof HTMLElement ? logoScrollTrack.getBoundingClientRect() : null;
+  const logoFramePinned = trackRect && logoIntro instanceof HTMLElement
+    && trackRect.top <= 0
+    && trackRect.bottom > logoIntro.offsetHeight;
+
+  header?.classList.toggle('is-scrolled', window.scrollY > 24 && !logoFramePinned);
 }
 
 function updateActiveSection() {
@@ -80,6 +88,18 @@ function updateActiveSection() {
 function updateScrollState() {
   updateHeader();
   updateActiveSection();
+  updateLogoFill();
+}
+
+function updateLogoFill() {
+  if (!(logoScrollTrack instanceof HTMLElement) || !(logoIntro instanceof HTMLElement) || !(logoFill instanceof HTMLElement)) return;
+
+  const scrollDistance = logoScrollTrack.offsetHeight - logoIntro.offsetHeight;
+  const progress = reducedMotion.matches || scrollDistance <= 0
+    ? 1
+    : Math.min(1, Math.max(0, -logoScrollTrack.getBoundingClientRect().top / scrollDistance));
+
+  logoFill.style.setProperty('--logo-fill-progress', `${progress * 100}%`);
 }
 
 function initParticleWave() {
@@ -90,50 +110,97 @@ function initParticleWave() {
   const context = canvas.getContext('2d', { alpha: true, desynchronized: true });
   if (!context) return () => {};
 
+  const palette = [
+    'rgba(91, 79, 255, 0.92)',
+    'rgba(125, 81, 255, 0.9)',
+    'rgba(165, 77, 243, 0.9)',
+    'rgba(207, 67, 224, 0.9)',
+    'rgba(239, 67, 197, 0.88)',
+    'rgba(99, 128, 255, 0.9)',
+  ];
   const pointer = {
     currentX: 0.5,
     currentY: 0.48,
     targetX: 0.5,
     targetY: 0.48,
+    active: false,
+    down: false,
+    downX: 0.5,
+    downY: 0.48,
   };
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const frameInterval = 1000 / 30;
+  const pointerTimeConstant = coarsePointer ? 44 : 28;
+  const interactionRadius = 0.26;
+  const pulseDuration = 1.2;
+  const maxClickRipples = 8;
   const tau = Math.PI * 2;
-  const frameInterval = 1000 / 60;
-  const pointerTimeConstant = 55;
-  const scrollTimeConstant = 85;
   let width = 0;
   let height = 0;
   let pixelRatio = 1;
   let columns = 0;
   let rows = 0;
-  let rowSpacing = 34;
+  let rowSpacing = 24;
   let normalizedX = new Float32Array(0);
   let phases = new Float32Array(0);
+  let waveColumnSin = new Float32Array(0);
+  let waveColumnCos = new Float32Array(0);
+  let phaseSin = new Float32Array(0);
+  let phaseCos = new Float32Array(0);
+  let sheenColumnSin = new Float32Array(0);
+  let sheenColumnCos = new Float32Array(0);
   let animationId = 0;
   let lastFrame = 0;
   let elapsed = 0;
-  let scrollCurrent = window.scrollY;
-  let scrollTarget = window.scrollY;
-  let scrollVelocity = 0;
+  let clickRipples = [];
+  let lastPointerActivity = 0;
+  let pointerInside = false;
   let isRunning = false;
-  const interactionRadiusSquared = 1 / (5.2 * 5.2);
+  let isVisible = true;
+
+  function addShape(path, shape, x, y, size) {
+    if (shape === 0) {
+      path.moveTo(x + size, y);
+      path.arc(x, y, size, 0, tau);
+    } else if (shape === 1) {
+      path.moveTo(x, y - size);
+      path.lineTo(x + size * 0.92, y + size * 0.74);
+      path.lineTo(x - size * 0.92, y + size * 0.74);
+      path.closePath();
+    } else {
+      path.rect(x - size * 0.78, y - size * 0.78, size * 1.56, size * 1.56);
+    }
+  }
 
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    pixelRatio = Math.min(window.devicePixelRatio || 1, 1);
     canvas.width = Math.max(1, Math.floor(width * pixelRatio));
     canvas.height = Math.max(1, Math.floor(height * pixelRatio));
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-    columns = Math.max(26, Math.min(48, Math.round(width / 30)));
-    rowSpacing = Math.max(28, Math.min(42, Math.round(height / 22)));
+    columns = Math.max(40, Math.min(240, Math.round(width / 12)));
+    rowSpacing = Math.max(16, Math.min(24, Math.round(height / 62)));
     rows = Math.ceil(height / rowSpacing) + 5;
     normalizedX = new Float32Array(columns);
     phases = new Float32Array(columns);
+    waveColumnSin = new Float32Array(columns);
+    waveColumnCos = new Float32Array(columns);
+    phaseSin = new Float32Array(columns);
+    phaseCos = new Float32Array(columns);
+    sheenColumnSin = new Float32Array(columns);
+    sheenColumnCos = new Float32Array(columns);
 
     for (let column = 0; column < columns; column += 1) {
       normalizedX[column] = column / (columns - 1) * 2 - 1;
       phases[column] = column * 0.21;
+      waveColumnSin[column] = Math.sin(normalizedX[column] * 4 + phases[column]);
+      waveColumnCos[column] = Math.cos(normalizedX[column] * 4 + phases[column]);
+      phaseSin[column] = Math.sin(phases[column]);
+      phaseCos[column] = Math.cos(phases[column]);
+      sheenColumnSin[column] = Math.sin(normalizedX[column] * 2.55 + phases[column] * 0.2);
+      sheenColumnCos[column] = Math.cos(normalizedX[column] * 2.55 + phases[column] * 0.2);
     }
 
     draw();
@@ -143,70 +210,144 @@ function initParticleWave() {
     context.clearRect(0, 0, width, height);
 
     const centerX = width * 0.5;
-    const planeWidth = Math.min(width * 1.5, 1700);
-    const pointerX = pointer.currentX * width;
-    const pointerY = pointer.currentY * height;
-    const scrollPhase = scrollCurrent * 0.0028;
-    const scrollLift = scrollVelocity * 10;
+    const planeWidth = Math.min(width * 1.08, 2100);
+    const pointerX = (pointer.down ? pointer.downX : pointer.currentX) * width;
+    const pointerY = (pointer.down ? pointer.downY : pointer.currentY) * height;
     const inverseWidth = 1 / Math.max(width, 1);
     const inverseHeight = 1 / Math.max(height, 1);
-    const firstWorldRow = Math.floor(scrollCurrent / rowSpacing) - 2;
-    const scrollRemainder = scrollCurrent - Math.floor(scrollCurrent / rowSpacing) * rowSpacing;
-    const lightPath = new Path2D();
-    const deepPath = new Path2D();
+    const colorPaths = palette.map(() => [new Path2D(), new Path2D(), new Path2D()]);
+    const sheenPath = new Path2D();
+    const pointerPath = new Path2D();
+    const pulsePaths = clickRipples.map(() => new Path2D());
+    const baseSize = Math.max(2.6, Math.min(4.6, rowSpacing * 0.17));
+    const pointerInfluenceActive = pointer.active || pointer.down;
 
     for (let row = 0; row < rows; row += 1) {
-      const worldRow = firstWorldRow + row;
       const rowProgress = row / Math.max(rows - 1, 1);
-      const gridY = worldRow * 0.37;
-      const depth = 0.91 + rowProgress * 0.09;
-      const baseY = (row - 2) * rowSpacing - scrollRemainder;
+      const gridY = rowProgress * 2 - 1;
+      const depth = 0.96 + rowProgress * 0.08;
+      const baseY = (row - 2) * rowSpacing;
+      const rowPhase = row * 0.19;
+      const waveY1Angle = rowPhase + elapsed * 0.16;
+      const waveY1Sin = Math.sin(waveY1Angle);
+      const waveY1Cos = Math.cos(waveY1Angle);
+      const waveY2Angle = gridY * 3.5 + rowPhase - elapsed * 0.13;
+      const waveY2Sin = Math.sin(waveY2Angle);
+      const waveY2Cos = Math.cos(waveY2Angle);
+      const waveXAngle = gridY * 3.5 + rowPhase + elapsed * 0.14;
+      const waveXSin = Math.sin(waveXAngle);
+      const waveXCos = Math.cos(waveXAngle);
+      const sheenAngle = gridY * 1.8 + row * 0.038 - elapsed * 0.24;
+      const sheenRowSin = Math.sin(sheenAngle);
+      const sheenRowCos = Math.cos(sheenAngle);
 
       for (let column = 0; column < columns; column += 1) {
         const gridX = normalizedX[column];
-        const baseX = centerX + gridX * planeWidth * 0.72 * depth;
-        const distanceX = baseX - pointerX;
-        const distanceY = baseY - pointerY;
-        const normalizedDistanceX = distanceX * inverseWidth;
-        const normalizedDistanceY = distanceY * inverseHeight;
-        const distanceSquared = normalizedDistanceX * normalizedDistanceX + normalizedDistanceY * normalizedDistanceY;
-        const phase = phases[column] + worldRow * 0.19;
-        const wave =
-          Math.sin(gridX * 5.6 + scrollPhase * 0.9 + elapsed * 0.24 + phase) * 12 +
-          Math.cos(gridY * 5.1 - scrollPhase * 1.15 - elapsed * 0.18 + phase) * 8 +
-          Math.sin((gridX + gridY) * 3.2 - scrollPhase * 0.72 - elapsed * 0.12) * 5;
-        let interactionX = 0;
-        let interactionY = 0;
-        let interactionInfluence = 0;
-
-        if (distanceSquared < interactionRadiusSquared) {
-          const distance = Math.sqrt(distanceSquared);
-          interactionInfluence = 1 - distance * 5.2;
-          const push = interactionInfluence * 22;
-          const safeDistance = Math.max(Math.sqrt(distanceX * distanceX + distanceY * distanceY), 1);
-          const ripple = Math.sin(distance * 72 - elapsed * 3.4 + phase) * push;
-          interactionX = distanceX / safeDistance * push;
-          interactionY = distanceY / safeDistance * push + ripple;
+        const baseX = centerX + gridX * planeWidth * 0.48 * depth;
+        let distanceX = 0;
+        let distanceY = 0;
+        let distance = Infinity;
+        let safeDistance = 1;
+        if (pointerInfluenceActive) {
+          distanceX = baseX - pointerX;
+          distanceY = baseY - pointerY;
+          distance = Math.hypot(distanceX * inverseWidth, distanceY * inverseHeight);
+          safeDistance = Math.max(Math.hypot(distanceX, distanceY), 1);
         }
+        const shape = (Math.floor(column / 3) + Math.floor(row / 3)) % 3;
+        const phase = phases[column] + row * 0.19;
+        const waveY = (
+          waveColumnSin[column] * waveY1Cos + waveColumnCos[column] * waveY1Sin
+        ) * 4.5 + (
+          phaseCos[column] * waveY2Cos - phaseSin[column] * waveY2Sin
+        ) * 3.5;
+        const waveX = (
+          phaseSin[column] * waveXCos + phaseCos[column] * waveXSin
+        ) * 2.5;
+        const hoverInfluence = pointer.active && !pointer.down ? Math.max(0, 1 - distance / interactionRadius) : 0;
+        const holdInfluence = pointer.down ? Math.max(0, 1 - distance / 0.3) : 0;
+        let ringInfluence = 0;
+        let ringPushX = 0;
+        let ringPushY = 0;
+        let ripple = 0;
+        clickRipples.forEach((clickRipple, index) => {
+          const rippleX = baseX - clickRipple.x * width;
+          const rippleY = baseY - clickRipple.y * height;
+          const rippleDistance = Math.hypot(rippleX * inverseWidth, rippleY * inverseHeight);
+          const rippleRadius = 0.035 + Math.min(clickRipple.age, 1.05) * 0.47;
+          const ringDistance = Math.abs(rippleDistance - rippleRadius);
+          const strength = Math.exp(-(ringDistance * ringDistance) / 0.0008) * Math.exp(-clickRipple.age * 1.25);
 
-        const scrollWave = Math.sin(gridX * 4.2 + scrollPhase * 1.8 + gridY * 2.6) * 10;
-        const x = baseX + interactionX + wave * 0.2 + scrollWave * 0.28;
-        const y = baseY + interactionY + wave + scrollWave + scrollLift;
-        const radius = 0.55 + depth * 0.65 + interactionInfluence * 1.2;
-        const path = (row + column) % 4 === 0 ? lightPath : deepPath;
+          if (strength > ringInfluence) {
+            ringInfluence = strength;
+            const safeRippleDistance = Math.max(Math.hypot(rippleX, rippleY), 1);
+            const push = strength * 24;
+            ringPushX = rippleX / safeRippleDistance * push;
+            ringPushY = rippleY / safeRippleDistance * push;
+            ripple = Math.sin((rippleDistance - rippleRadius) * 86 + phase) * strength * 4;
+          }
 
-        path.moveTo(x + radius, y);
-        path.arc(x, y, radius, 0, tau);
+          if (strength > 0.22) addShape(pulsePaths[index], shape, baseX + waveX, baseY + waveY, baseSize * 1.16);
+        });
+        const influence = Math.max(hoverInfluence, holdInfluence, ringInfluence);
+        const pointerPush = hoverInfluence * 5 + holdInfluence * 18;
+        const x = baseX + waveX + distanceX / safeDistance * pointerPush + ringPushX;
+        const y = baseY + waveY + distanceY / safeDistance * pointerPush + ringPushY + ripple;
+        const size = baseSize * (0.84 + influence * 0.42);
+        const colorPosition = (
+          column / columns * 3.45 +
+          rowProgress * 1.1 +
+          elapsed * 0.075 +
+          influence * 0.42 +
+          palette.length * 2
+        ) % palette.length;
+        const color = Math.floor(colorPosition);
+        addShape(colorPaths[color][shape], shape, x, y, size);
+
+        const sheen = Math.max(0, sheenColumnCos[column] * sheenRowCos - sheenColumnSin[column] * sheenRowSin);
+        if (sheen > 0.86) addShape(sheenPath, shape, x, y, size * 1.06);
+        if (hoverInfluence > 0.05 || holdInfluence > 0.05) addShape(pointerPath, shape, x, y, size * 1.12);
       }
     }
 
-    context.globalCompositeOperation = 'screen';
-    context.globalAlpha = 0.52;
-    context.fillStyle = 'rgba(221, 211, 255, 0.82)';
-    context.fill(lightPath);
-    context.globalAlpha = 0.62;
-    context.fillStyle = 'rgba(121, 88, 202, 0.68)';
-    context.fill(deepPath);
+    const shapeOpacity = [0.54, 0.48, 0.52];
+    colorPaths.forEach((paths, color) => {
+      paths.forEach((path, shape) => {
+        context.globalAlpha = shapeOpacity[shape];
+        context.fillStyle = palette[color];
+        context.fill(path);
+      });
+    });
+
+    context.globalAlpha = 0.36;
+    context.fillStyle = 'rgba(246, 232, 255, 0.78)';
+    context.fill(sheenPath);
+
+    if (pointer.active || pointer.down) {
+      const pointerGlow = context.createRadialGradient(pointerX, pointerY, 0, pointerX, pointerY, Math.min(width, height) * 0.22);
+      pointerGlow.addColorStop(0, 'rgba(243, 226, 255, 0.56)');
+      pointerGlow.addColorStop(0.28, 'rgba(223, 108, 255, 0.28)');
+      pointerGlow.addColorStop(0.68, 'rgba(117, 127, 255, 0.11)');
+      pointerGlow.addColorStop(1, 'rgba(88, 87, 255, 0)');
+      context.globalAlpha = pointer.down ? 0.92 : 0.7;
+      context.fillStyle = pointerGlow;
+      context.fill(pointerPath);
+    }
+
+    clickRipples.forEach((clickRipple, index) => {
+      const rippleX = clickRipple.x * width;
+      const rippleY = clickRipple.y * height;
+      const rippleRadius = 0.035 + Math.min(clickRipple.age, 1.05) * 0.47;
+      const pulseGlow = context.createRadialGradient(rippleX, rippleY, 0, rippleX, rippleY, Math.min(width, height) * rippleRadius);
+      pulseGlow.addColorStop(0, 'rgba(255, 245, 255, 0.08)');
+      pulseGlow.addColorStop(0.65, 'rgba(235, 100, 236, 0.3)');
+      pulseGlow.addColorStop(0.88, 'rgba(142, 132, 255, 0.52)');
+      pulseGlow.addColorStop(1, 'rgba(117, 132, 255, 0)');
+      context.globalAlpha = 0.9;
+      context.fillStyle = pulseGlow;
+      context.fill(pulsePaths[index]);
+    });
+
     context.globalAlpha = 1;
     context.globalCompositeOperation = 'source-over';
   }
@@ -221,18 +362,20 @@ function initParticleWave() {
     const delta = Math.min(timestamp - lastFrame || 16, 64);
     lastFrame = timestamp;
     elapsed += delta / 1000;
+    if (clickRipples.length) {
+      clickRipples.forEach((clickRipple) => { clickRipple.age += delta / 1000; });
+      clickRipples = clickRipples.filter((clickRipple) => clickRipple.age < pulseDuration);
+    }
+    pointer.active = pointerInside && timestamp - lastPointerActivity < 180;
     const pointerEase = 1 - Math.exp(-delta / pointerTimeConstant);
-    const scrollEase = 1 - Math.exp(-delta / scrollTimeConstant);
     pointer.currentX += (pointer.targetX - pointer.currentX) * pointerEase;
     pointer.currentY += (pointer.targetY - pointer.currentY) * pointerEase;
-    scrollCurrent += (scrollTarget - scrollCurrent) * scrollEase;
-    scrollVelocity *= Math.pow(0.88, delta / (1000 / 48));
     draw();
     animationId = requestAnimationFrame(renderFrame);
   }
 
   function start() {
-    if (isRunning || reducedMotion.matches || document.hidden) return;
+    if (isRunning || !isVisible || reducedMotion.matches || document.hidden) return;
     isRunning = true;
     lastFrame = performance.now();
     animationId = requestAnimationFrame(renderFrame);
@@ -243,21 +386,45 @@ function initParticleWave() {
     cancelAnimationFrame(animationId);
   }
 
-  function handlePointerMove(event) {
+  function updatePointer(event) {
     pointer.targetX = Math.max(0, Math.min(1, event.clientX / width));
     pointer.targetY = Math.max(0, Math.min(1, event.clientY / height));
-  }
-
-  function handleScroll() {
-    const nextScrollY = window.scrollY;
-    const scrollDelta = nextScrollY - scrollTarget;
-    scrollTarget = nextScrollY;
-    scrollVelocity = Math.max(-1, Math.min(1, scrollDelta / Math.max(height, 1)));
+    pointer.active = true;
+    pointerInside = true;
+    lastPointerActivity = performance.now();
 
     if (reducedMotion.matches) {
-      scrollCurrent = scrollTarget;
-      draw();
+      pointer.currentX = pointer.targetX;
+      pointer.currentY = pointer.targetY;
     }
+  }
+
+  function handlePointerMove(event) {
+    updatePointer(event);
+    if (reducedMotion.matches) draw();
+  }
+
+  function handlePointerDown(event) {
+    updatePointer(event);
+    pointer.downX = pointer.targetX;
+    pointer.downY = pointer.targetY;
+    pointer.down = true;
+    clickRipples.push({ x: pointer.downX, y: pointer.downY, age: 0 });
+    if (clickRipples.length > maxClickRipples) clickRipples.shift();
+    if (reducedMotion.matches) draw();
+  }
+
+  function handlePointerUp(event) {
+    pointer.down = false;
+    if (event.pointerType === 'touch') pointer.active = false;
+    if (reducedMotion.matches) draw();
+  }
+
+  function handlePointerLeave() {
+    pointer.active = false;
+    pointerInside = false;
+    pointer.down = false;
+    if (reducedMotion.matches) draw();
   }
 
   function handleVisibilityChange() {
@@ -268,18 +435,36 @@ function initParticleWave() {
     }
   }
 
+  const visibilityObserver = typeof IntersectionObserver === 'undefined'
+    ? null
+    : new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) start();
+      else stop();
+    });
+
   resize();
   window.addEventListener('resize', resize);
   window.addEventListener('pointermove', handlePointerMove, { passive: true });
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('pointerdown', handlePointerDown, { passive: true });
+  window.addEventListener('pointerup', handlePointerUp, { passive: true });
+  window.addEventListener('pointercancel', handlePointerUp, { passive: true });
+  window.addEventListener('pointerleave', handlePointerLeave, { passive: true });
+  window.addEventListener('blur', handlePointerLeave);
   document.addEventListener('visibilitychange', handleVisibilityChange);
+  if (shell instanceof Element) visibilityObserver?.observe(shell);
   start();
 
   return () => {
     stop();
+    visibilityObserver?.disconnect();
     window.removeEventListener('resize', resize);
     window.removeEventListener('pointermove', handlePointerMove);
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('pointerdown', handlePointerDown);
+    window.removeEventListener('pointerup', handlePointerUp);
+    window.removeEventListener('pointercancel', handlePointerUp);
+    window.removeEventListener('pointerleave', handlePointerLeave);
+    window.removeEventListener('blur', handlePointerLeave);
     document.removeEventListener('visibilitychange', handleVisibilityChange);
   };
 }

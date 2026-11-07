@@ -9,7 +9,7 @@
 }
 
 .particle-wave__canvas {
-  opacity: 0.58;
+  opacity: 0.6;
 }
 
 .hero-section {
@@ -28,7 +28,6 @@
 }
 
 .hero-kicker,
-.section-label,
 .content-label {
   display: block;
   color: var(--color-accent-bright);
@@ -809,11 +808,7 @@ body.menu-open {
   }
 
   .particle-wave__canvas {
-    opacity: 0.42;
-  }
-
-  .particle-wave__grain {
-    opacity: 0.025;
+    opacity: 0.5;
   }
 
   body::after {
