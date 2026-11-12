@@ -168,17 +168,39 @@ export function mountNeurovantHomepage(rootElement) {
             <p>Get a short note when a project is ready to share. You can also find Neurovant on Discord.</p>
             <a class="nv-text-link" href="https://discord.gg/NQ3qjFDCMn" target="_blank" rel="noopener noreferrer">Join our Discord <span aria-hidden="true">↗</span></a>
           </div>
-          <form class="nv-form" data-contact-form action="https://formspree.io/f/mqpazlvw" method="POST" novalidate>
-            <label for="email">Email address</label>
-            <p id="email-help">Only used for Neurovant updates.</p>
-            <div class="nv-form__control">
-              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-help form-status signup-note" aria-invalid="false">
-              <button type="submit">Join the list <span aria-hidden="true">↗</span></button>
-            </div>
-            <input type="hidden" name="_subject" value="New Neurovant waitlist signup">
-            <p class="nv-form__status" id="form-status" role="status" aria-live="polite"></p>
-            <p class="nv-form__privacy" id="signup-note">Your email will only be used for Neurovant updates.</p>
-          </form>
+          <div class="nv-contact__community">
+            <form class="nv-form" data-contact-form novalidate>
+              <label for="display-name">Display name</label>
+              <p id="name-help">This name may appear on the referral leaderboard.</p>
+              <input id="display-name" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="Your name" required aria-describedby="name-help form-status signup-note" aria-invalid="false">
+              <label for="email">Email address</label>
+              <p id="email-help">We’ll email a sign-in link to verify your address.</p>
+              <div class="nv-form__control">
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-help form-status signup-note" aria-invalid="false">
+                <button type="submit">Join the list <span aria-hidden="true">↗</span></button>
+              </div>
+              <input type="hidden" name="referral_code" data-referral-code>
+              <p class="nv-form__status" id="form-status" role="status" aria-live="polite"></p>
+              <p class="nv-form__privacy" id="signup-note">Your email is private. Only your display name and verified referral count appear publicly.</p>
+              <div class="nv-form__referral" data-referral-panel hidden>
+                <label for="referral-link">Your referral link</label>
+                <div class="nv-form__control">
+                  <input id="referral-link" data-referral-link readonly aria-label="Your referral link">
+                  <button type="button" data-copy-referral>Copy link</button>
+                </div>
+              </div>
+            </form>
+            <section class="nv-leaderboard" aria-labelledby="leaderboard-title">
+              <div class="nv-leaderboard__heading">
+                <div><p class="nv-leaderboard__eyebrow">The community</p><h3 id="leaderboard-title">Referral leaderboard</h3></div>
+                <span class="nv-leaderboard__cap">TOP 50</span>
+              </div>
+              <ol class="nv-leaderboard__list" data-leaderboard aria-live="polite">
+                <li class="nv-leaderboard__empty">Loading the leaderboard…</li>
+              </ol>
+              <p class="nv-leaderboard__note">Only verified signups count.</p>
+            </section>
+          </div>
         </div>
       </section>
     </main>

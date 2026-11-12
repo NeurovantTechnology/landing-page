@@ -1,0 +1,4 @@
+project_id = "neurovant-waitlist"
+
+[functions.waitlist-leaderboard]
+verify_jwt = false
