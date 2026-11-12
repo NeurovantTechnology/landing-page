@@ -1,0 +1,4 @@
+project_id = "aepiokzkmpqralnvrkvv"
+
+[functions.waitlist-leaderboard]
+verify_jwt = false

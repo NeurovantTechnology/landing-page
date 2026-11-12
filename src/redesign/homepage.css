@@ -200,6 +200,7 @@
 
 .nv-contact { padding-bottom: clamp(5rem, 9vw, 7.5rem); }
 .nv-contact__layout { display: grid; grid-template-columns: minmax(17rem, 0.9fr) minmax(20rem, 1.1fr); align-items: center; gap: clamp(3rem, 8vw, 8rem); }
+.nv-contact__community { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.82fr); align-items: stretch; gap: 1rem; }
 .nv-contact__copy h2 { max-width: 9ch; }
 .nv-contact__copy > p { max-width: 28rem; margin-top: 1.2rem; color: var(--nv-muted); font-size: 0.92rem; line-height: 1.65; }
 .nv-form { padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--nv-line); border-radius: 1rem; background: var(--nv-glass); }
@@ -207,6 +208,8 @@
 .nv-form > p:not(.nv-form__status, .nv-form__privacy) { margin-top: 0.4rem; color: var(--nv-faint); font-size: 0.73rem; }
 .nv-form__control { display: flex; gap: 0.5rem; margin-top: 1rem; }
 .nv-form input[type="email"] { min-width: 0; min-height: 3.1rem; flex: 1; padding: 0 0.9rem; border: 1px solid var(--nv-line-strong); border-radius: 0.65rem; background: rgba(6, 5, 11, 0.48); color: var(--nv-ink); font-size: 0.82rem; }
+.nv-form input[type="text"], .nv-form input[readonly] { width: 100%; min-width: 0; min-height: 3.1rem; margin-top: 0.65rem; padding: 0 0.9rem; border: 1px solid var(--nv-line-strong); border-radius: 0.65rem; background: rgba(6, 5, 11, 0.48); color: var(--nv-ink); font-size: 0.82rem; }
+.nv-form > label:not(:first-child) { margin-top: 1.25rem; }
 .nv-form input::placeholder { color: var(--nv-faint); }
 .nv-form input[aria-invalid="true"] { border-color: #ffadad; }
 .nv-form__control button { display: inline-flex; min-height: 3.1rem; align-items: center; justify-content: center; gap: 0.65rem; padding: 0 1rem; border: 1px solid rgba(210, 198, 255, 0.48); border-radius: 0.65rem; background: rgba(181, 165, 255, 0.17); cursor: pointer; font-size: 0.77rem; font-weight: 570; transition: background 180ms ease, border-color 180ms ease; }
@@ -215,6 +218,20 @@
 .nv-form__status { min-height: 1.3rem; margin-top: 0.7rem; color: var(--color-accent-bright, #d7ceff); font-size: 0.73rem; }
 .nv-form__status[data-state="error"] { color: #ffadad; }
 .nv-form__privacy { margin-top: 0.45rem; color: var(--nv-faint); font-size: 0.66rem; line-height: 1.5; }
+.nv-form__referral { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--nv-line); }
+.nv-form__referral .nv-form__control input { flex: 1; }
+.nv-leaderboard { min-width: 0; padding: clamp(1.1rem, 2.2vw, 1.5rem); border: 1px solid var(--nv-line); border-radius: 1rem; background: var(--nv-glass); }
+.nv-leaderboard__heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.nv-leaderboard__eyebrow, .nv-leaderboard__cap { color: var(--nv-faint); font: 500 0.62rem/1.4 var(--font-mono, monospace); letter-spacing: 0.1em; text-transform: uppercase; }
+.nv-leaderboard h3 { margin-top: 0.45rem; font-size: 1.35rem; font-weight: 540; letter-spacing: -0.04em; }
+.nv-leaderboard__cap { padding: 0.35rem 0.5rem; border: 1px solid var(--nv-line); border-radius: 999px; white-space: nowrap; }
+.nv-leaderboard__list { display: grid; gap: 0; max-height: 22rem; margin: 1.2rem 0 0; padding: 0; overflow: auto; list-style: none; }
+.nv-leaderboard__row { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto; align-items: center; gap: 0.55rem; min-height: 2.65rem; border-top: 1px solid var(--nv-line); font-size: 0.76rem; }
+.nv-leaderboard__rank { color: var(--nv-faint); font-family: var(--font-mono, monospace); font-size: 0.65rem; }
+.nv-leaderboard__name { overflow: hidden; color: var(--nv-ink); text-overflow: ellipsis; white-space: nowrap; }
+.nv-leaderboard__count { color: var(--nv-muted); font-family: var(--font-mono, monospace); font-size: 0.68rem; }
+.nv-leaderboard__empty, .nv-leaderboard__note { color: var(--nv-faint); font-size: 0.72rem; line-height: 1.5; }
+.nv-leaderboard__note { margin-top: 0.9rem; }
 
 .nv-footer { padding-block: 1.8rem 1.25rem; border-top: 1px solid var(--nv-line); background: rgba(8, 7, 15, 0.38); }
 .nv-footer__main { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
@@ -255,7 +272,7 @@
   .nv-nav-support { grid-column: 1 / -1; }
   .nv-hero { min-height: max(43rem, 100svh); padding-top: 8.5rem; }
   .nv-hero h1 { font-size: clamp(3rem, 11.7vw, 5.3rem); }
-  .nv-project__layout, .nv-about__layout, .nv-contact__layout { grid-template-columns: 1fr; }
+  .nv-project__layout, .nv-about__layout, .nv-contact__layout, .nv-contact__community { grid-template-columns: 1fr; }
   .nv-project__layout { gap: 2.75rem; }
   .nv-about__layout { gap: 2.5rem; }
   .nv-focus { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }

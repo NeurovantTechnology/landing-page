@@ -30,8 +30,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check
+        run: npm run check
+
       - name: Build site
         run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://aepiokzkmpqralnvrkvv.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_od7ZnPnQE9XqaJtI53jSLQ_AqwKJ3Km
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
