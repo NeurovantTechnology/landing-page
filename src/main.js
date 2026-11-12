@@ -723,6 +723,7 @@ contactForm?.addEventListener('submit', async (event) => {
         shouldCreateUser: true,
         emailRedirectTo: window.location.origin + window.location.pathname,
         data: {
+          signup_context: 'waitlist',
           display_name: name,
           referral_code: referralCodeInput instanceof HTMLInputElement ? referralCodeInput.value : '',
         },
