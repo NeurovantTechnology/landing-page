@@ -1,17 +1,17 @@
 :root {
   color-scheme: dark;
-  --color-bg: #08070f;
-  --color-bg-deep: #05040a;
-  --color-surface: #100d1b;
-  --color-surface-raised: #18142a;
+  --color-bg: #1b1028;
+  --color-bg-deep: #12091d;
+  --color-surface: #241631;
+  --color-surface-raised: #30203f;
   --color-text: #f7f3ff;
   --color-text-soft: #ded7e8;
-  --color-muted: #aaa4b8;
-  --color-faint: #6d687b;
-  --color-line: rgba(226, 219, 255, 0.15);
-  --color-line-strong: rgba(226, 219, 255, 0.28);
-  --color-accent: #b8a8ff;
-  --color-accent-bright: #ddd5ff;
+  --color-muted: #c2b6d0;
+  --color-faint: #a89bb8;
+  --color-line: rgba(226, 219, 255, 0.2);
+  --color-line-strong: rgba(226, 219, 255, 0.34);
+  --color-accent: #c3a9ff;
+  --color-accent-bright: #e8ddff;
   --color-accent-deep: #8f7bd6;
   --color-paper: #efedf5;
   --color-paper-ink: #171421;
@@ -59,9 +59,9 @@ body {
   margin: 0;
   overflow-x: clip;
   background:
-    radial-gradient(circle at 82% 6%, rgba(157, 137, 255, 0.1), transparent 28rem),
-    radial-gradient(circle at 4% 65%, rgba(112, 92, 194, 0.06), transparent 28rem),
-    var(--color-bg);
+    radial-gradient(circle at 82% 6%, rgba(191, 130, 255, 0.2), transparent 32rem),
+    radial-gradient(circle at 4% 65%, rgba(132, 83, 201, 0.2), transparent 31rem),
+    linear-gradient(155deg, #241432 0%, var(--color-bg) 48%, #160c22 100%);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -94,9 +94,9 @@ body::after {
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(ellipse at 18% 34%, rgba(104, 72, 239, 0.12), transparent 44%),
-    radial-gradient(ellipse at 82% 62%, rgba(220, 58, 190, 0.08), transparent 45%),
-    linear-gradient(145deg, #07060e, #100b1c 48%, #07060e);
+    radial-gradient(ellipse at 18% 34%, rgba(153, 82, 228, 0.22), transparent 44%),
+    radial-gradient(ellipse at 82% 62%, rgba(219, 74, 190, 0.14), transparent 45%),
+    linear-gradient(145deg, #1c102a, #29143d 48%, #170d24);
   contain: paint;
   pointer-events: none;
 }
