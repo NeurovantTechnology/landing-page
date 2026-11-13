@@ -243,7 +243,7 @@ export function mountNeurovantHomepage(rootElement) {
       <div class="nv-shell">
         <div class="nv-footer__main">
           <a class="nv-brand nv-brand--footer" href="#top" aria-label="Neurovant Technology home"><img src="/neurovant-logo.png" alt="" width="72" height="44"><span>Neurovant <span>Technology</span></span></a>
-          <nav aria-label="Footer navigation"><a href="#about">About</a><a href="#principles">Our approach</a><a href="./projects/neurofit/">Projects</a><a href="#team">Team</a><a href="#contact">Contact</a></nav>
+          <nav aria-label="Footer navigation"><a href="#about">About</a><a href="#principles">Our approach</a><a href="#mission-control">Mission Control</a><a href="./projects/neurofit/">Projects</a><a href="#team">Team</a><a href="#contact">Contact</a></nav>
           <a class="nv-footer__discord" href="https://discord.gg/NQ3qjFDCMn" target="_blank" rel="noopener noreferrer">Discord <span aria-hidden="true">↗</span></a>
         </div>
         <div class="nv-footer__bottom"><span>© <span data-year="2026">2026</span> Neurovant Technology</span><span>Independent team.</span></div>
