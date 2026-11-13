@@ -1,6 +1,7 @@
 import './homepage.css';
 import { mountNeuroPortalFolder } from './project-folder.tsx';
 import { mountHeroActions } from './hero-actions.tsx';
+import { mountMissionControlStatus } from './mission-control.js';
 
 /**
  * Mount the homepage into a host element. Call this before importing
@@ -25,6 +26,7 @@ export function mountNeurovantHomepage(rootElement) {
         <nav class="nv-nav-links nav-links" id="primary-navigation" aria-label="Primary navigation" data-nav>
           <a href="#about">About</a>
           <a href="#principles">Our approach</a>
+          <a href="#mission-control">Mission Control</a>
           <div class="nv-dropdown" data-project-dropdown>
             <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="project-menu" data-project-toggle>
               Projects <svg class="nv-dropdown__caret" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4"></path></svg>
@@ -86,6 +88,38 @@ export function mountNeurovantHomepage(rootElement) {
 
             <div data-project-folder-root></div>
           </div>
+        </div>
+      </section>
+
+      <section class="nv-mission-control nv-section" id="mission-control" aria-labelledby="mission-control-title">
+        <div class="nv-shell">
+          <div class="nv-mission-control__intro">
+            <div class="nv-mission-control__copy">
+              <p class="nv-mission-control__eyebrow">NEUROVANT TECHNOLOGY / LIVE OFFICE</p>
+              <h2 id="mission-control-title">Mission Control<span>.</span></h2>
+              <p>See which Neurovant workflows are active and where they are working. This page is a read-only status display; it does not generate or publish work.</p>
+            </div>
+            <div class="nv-mission-control__readout" data-mission-control-status role="status" aria-live="polite">
+              <div class="nv-mission-control__readout-top">
+                <span class="nv-mission-control__dot" data-mc-dot aria-hidden="true"></span>
+                <span data-mc-connection>Connecting to the office…</span>
+              </div>
+              <strong data-mc-headline>Checking live status</strong>
+              <p data-mc-message>Waiting for the scheduled workflow feed.</p>
+              <time data-mc-updated></time>
+            </div>
+          </div>
+          <ul class="nv-mission-control__grid" data-mc-grid aria-label="Neurovant workflow status">
+            <li class="nv-mission-control__card" data-mc-workflow="marketing"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Marketing pipeline</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="leads"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Lead follow-up</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="meetings"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Meeting follow-through</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="support"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Customer support</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="projects"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Project operations</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="research"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Research briefing</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="administration"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Administration review</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+            <li class="nv-mission-control__card" data-mc-workflow="website"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Website upkeep</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
+          </ul>
+          <p class="nv-mission-control__note">Display-only activity. No messages, customer data, drafts, or private source text appear here.</p>
         </div>
       </section>
 
@@ -222,6 +256,9 @@ export function mountNeurovantHomepage(rootElement) {
 
   const folderMount = rootElement.querySelector('[data-project-folder-root]');
   if (folderMount instanceof HTMLElement) mountNeuroPortalFolder(folderMount);
+
+  const missionControlMount = rootElement.querySelector('[data-mission-control-status]');
+  if (missionControlMount instanceof HTMLElement) mountMissionControlStatus(missionControlMount);
 
   rootElement.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'touch' && event.target instanceof Element) {
