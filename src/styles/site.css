@@ -60,7 +60,7 @@ body {
   overflow-x: clip;
   background-color: var(--color-bg);
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(195, 169, 255, 0.42) 0 1px, transparent 2px),
+    radial-gradient(circle at 1px 1px, rgba(195, 169, 255, 0.48) 0 1px, rgba(195, 169, 255, 0.14) 1.2px, transparent 4px),
     linear-gradient(rgba(195, 169, 255, 0.085) 1px, transparent 1px),
     linear-gradient(90deg, rgba(195, 169, 255, 0.085) 1px, transparent 1px),
     radial-gradient(ellipse 80% 45% at 50% 0%, rgba(164, 119, 226, 0.12), transparent 100%);
