@@ -58,7 +58,15 @@ body {
   min-width: 20rem;
   margin: 0;
   overflow-x: clip;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(195, 169, 255, 0.48) 0 1px, rgba(195, 169, 255, 0.14) 1.2px, transparent 4px),
+    linear-gradient(rgba(195, 169, 255, 0.085) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(195, 169, 255, 0.085) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 45% at 50% 0%, rgba(164, 119, 226, 0.12), transparent 100%);
+  background-size: 56px 56px, 56px 56px, 56px 56px, 100% 100%;
+  background-position: 0 0, 0 0, 0 0, center top;
+  background-repeat: repeat, repeat, repeat, no-repeat;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;

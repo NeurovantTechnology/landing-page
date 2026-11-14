@@ -1,7 +1,8 @@
 .nv-home {
   position: relative;
+  z-index: 1;
   isolation: isolate;
-  background: var(--color-bg, #1b1028);
+  background: transparent;
   --nv-ink: var(--color-text, #f5f1ff);
   --nv-soft: var(--color-text-soft, #d2cde1);
   --nv-muted: var(--color-muted, #c2b6d0);
@@ -160,7 +161,7 @@
 .nv-focus h3 { margin-top: 0.5rem; font-size: 1.25rem; font-weight: 500; letter-spacing: -0.04em; line-height: 1.1; }
 .nv-focus article > i { position: absolute; top: 1rem; right: 1rem; color: var(--color-accent, #b5a5ff); font-size: 0.9rem; font-style: normal; }
 
-.nv-approach { border-block: 1px solid rgba(221, 213, 255, 0.08); background: var(--color-bg, #1b1028); }
+.nv-approach { border-block: 1px solid rgba(221, 213, 255, 0.08); background: transparent; }
 .nv-approach__heading, .nv-team__heading { display: flex; align-items: end; justify-content: space-between; gap: 3rem; }
 .nv-approach__heading h2, .nv-team__heading h2 { max-width: 12ch; font-size: clamp(2.8rem, 6vw, 5.5rem); }
 .nv-approach__heading > p { max-width: 19rem; padding-bottom: 0.3rem; color: var(--nv-muted); font-size: 0.9rem; line-height: 1.65; }
@@ -193,7 +194,7 @@
 .nv-team__link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1.3rem; color: var(--nv-soft); font-size: 0.72rem; }
 .nv-team__link i { color: var(--color-accent-bright, #d7ceff); font-size: 0.88rem; font-style: normal; }
 
-.nv-vision { position: relative; overflow: hidden; padding-block: clamp(5.5rem, 12vw, 10rem); border-block: 1px solid var(--nv-line); background: var(--color-bg, #1b1028); }
+.nv-vision { position: relative; overflow: hidden; padding-block: clamp(5.5rem, 12vw, 10rem); border-block: 1px solid var(--nv-line); background: transparent; }
 .nv-vision__inner { display: grid; grid-template-columns: 1fr; align-items: start; gap: 2rem; }
 .nv-vision__phrase { grid-column: 1; max-width: 18ch; font-size: clamp(2.5rem, 6.4vw, 6rem); font-weight: 500; letter-spacing: -0.07em; line-height: 1.02; text-wrap: balance; }
 .nv-vision__phrase span { color: var(--nv-muted); }
@@ -234,7 +235,7 @@
 .nv-leaderboard__empty, .nv-leaderboard__note { color: var(--nv-faint); font-size: 0.72rem; line-height: 1.5; }
 .nv-leaderboard__note { margin-top: 0.9rem; }
 
-.nv-footer { padding-block: 1.8rem 1.25rem; border-top: 1px solid var(--nv-line); background: var(--color-bg, #1b1028); }
+.nv-footer { padding-block: 1.8rem 1.25rem; border-top: 1px solid var(--nv-line); background: transparent; }
 .nv-footer__main { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 .nv-brand--footer > img { width: 2.7rem; height: 2.25rem; }
 .nv-footer__main nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem 1.35rem; color: var(--nv-muted); font-size: 0.74rem; }
