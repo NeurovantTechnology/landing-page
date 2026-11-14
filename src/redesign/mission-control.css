@@ -8,7 +8,7 @@
   overflow: hidden;
   padding-block: clamp(4.5rem, 8vw, 8rem);
   color: var(--mc-ink);
-  background: var(--color-bg, #1b1028);
+  background: transparent;
   border-block: 1px solid var(--mc-line);
 }
 
