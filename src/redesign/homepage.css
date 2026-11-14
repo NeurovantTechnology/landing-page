@@ -65,7 +65,7 @@
 @keyframes nv-support-gradient { from { transform: translateX(-20%); } to { transform: translateX(20%); } }
 .nv-menu-toggle { display: none; }
 
-.nv-hero__mark { position: relative; width: min(38vw, 24rem, 34svh); aspect-ratio: 1002 / 783; flex: 0 0 auto; }
+.nv-hero__mark { position: relative; width: min(38vw, 24rem, 30svh); aspect-ratio: 1002 / 783; flex: 0 0 auto; }
 .nv-logo-intro__fill-mask { position: absolute; inset: 0; overflow: hidden; clip-path: inset(0 calc(100% - var(--logo-fill-progress, 0%)) 0 0); }
 .nv-hero__mark .nv-logo-intro__fill-mask { clip-path: none; }
 .nv-logo-intro__fill { position: absolute; top: -35.38%; left: -13.97%; display: block; width: 125.15%; max-width: none; height: auto; }
