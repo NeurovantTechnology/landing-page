@@ -54,27 +54,23 @@ export function mountNeurovantHomepage(rootElement) {
           <p>We explore practical ways technology can support attention, movement, and everyday routines through high-performance applications for desktop and mobile.</p>
           <div class="nv-hero__actions" data-hero-actions></div>
         </div>
-      </section>
 
-      <div class="nv-logo-scroll-track" data-logo-scroll-track>
-        <section class="nv-logo-intro" id="brand-mark" data-logo-intro aria-label="Neurovant Technology logo reveal">
-          <div class="nv-logo-intro__mark" aria-hidden="true">
-            <div class="nv-logo-intro__fill-mask" data-logo-fill>
-              <img class="nv-logo-intro__fill" src="/neurovant-logo.png" alt="" width="1254" height="1254">
-            </div>
-            <svg class="nv-logo-intro__outline" viewBox="140 277 1002 783" preserveAspectRatio="none" focusable="false">
-              <defs>
-                <linearGradient id="nv-logo-outline-gradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#493dff"></stop>
-                  <stop offset="52%" stop-color="#a228eb"></stop>
-                  <stop offset="100%" stop-color="#f10ca8"></stop>
-                </linearGradient>
-              </defs>
-              <path d="M 1122 299 L 1119 296 L 1113 295 L 878 418 L 858 431 L 836 449 L 825 460 L 807 485 L 797 506 L 789 538 L 788 585 L 791 608 L 798 637 L 807 664 L 821 697 L 837 728 L 850 748 L 850 752 L 832 738 L 556 469 L 496 418 L 458 396 L 422 382 L 390 374 L 358 370 L 322 369 L 278 373 L 241 381 L 195 396 L 163 410 L 158 419 L 159 1037 L 164 1041 L 173 1039 L 398 930 L 422 913 L 442 893 L 452 879 L 462 860 L 470 832 L 472 815 L 471 779 L 466 749 L 457 713 L 443 669 L 425 625 L 426 624 L 706 922 L 747 962 L 791 994 L 827 1012 L 859 1024 L 905 1035 L 938 1038 L 977 1036 L 1011 1029 L 1039 1019 L 1074 999 L 1098 977 L 1107 965 L 1118 943 L 1123 919 Z" pathLength="1" fill="none" stroke="url(#nv-logo-outline-gradient)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
+        <div class="nv-hero__mark" aria-hidden="true">
+          <div class="nv-logo-intro__fill-mask">
+            <img class="nv-logo-intro__fill" src="/neurovant-logo.png" alt="" width="1254" height="1254">
           </div>
-        </section>
-      </div>
+          <svg class="nv-logo-intro__outline" viewBox="140 277 1002 783" preserveAspectRatio="none" focusable="false">
+            <defs>
+              <linearGradient id="nv-logo-outline-gradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#493dff"></stop>
+                <stop offset="52%" stop-color="#a228eb"></stop>
+                <stop offset="100%" stop-color="#f10ca8"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M 1122 299 L 1119 296 L 1113 295 L 878 418 L 858 431 L 836 449 L 825 460 L 807 485 L 797 506 L 789 538 L 788 585 L 791 608 L 798 637 L 807 664 L 821 697 L 837 728 L 850 748 L 850 752 L 832 738 L 556 469 L 496 418 L 458 396 L 422 382 L 390 374 L 358 370 L 322 369 L 278 373 L 241 381 L 195 396 L 163 410 L 158 419 L 159 1037 L 164 1041 L 173 1039 L 398 930 L 422 913 L 442 893 L 452 879 L 462 860 L 470 832 L 472 815 L 471 779 L 466 749 L 457 713 L 443 669 L 425 625 L 426 624 L 706 922 L 747 962 L 791 994 L 827 1012 L 859 1024 L 905 1035 L 938 1038 L 977 1036 L 1011 1029 L 1039 1019 L 1074 999 L 1098 977 L 1107 965 L 1118 943 L 1123 919 Z" pathLength="1" fill="none" stroke="url(#nv-logo-outline-gradient)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+      </section>
 
       <section class="nv-section nv-project" id="projects" aria-labelledby="project-title">
         <div class="nv-shell">
@@ -180,10 +176,11 @@ export function mountNeurovantHomepage(rootElement) {
           </div>
           <ul class="nv-team__grid" aria-label="Neurovant Technology team">
             <li><a data-spotlight href="https://discord.com/users/1300212275835043881" target="_blank" rel="noopener noreferrer" aria-label="Open enosh.tech's Discord profile in a new tab"><span class="nv-team__index">01 / NT</span><span class="nv-team__role">Founder &amp; Developer</span><strong>enosh.tech</strong><span class="nv-team__handle">@scienceman_pro</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
-            <li><a data-spotlight href="https://discord.com/users/1480253947984740393" target="_blank" rel="noopener noreferrer" aria-label="Open Jackson.tech's Discord profile in a new tab"><span class="nv-team__index">02 / NT</span><span class="nv-team__role">Founder</span><strong>Jackson.tech</strong><span class="nv-team__handle">@jacksonkarli.</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
+            <li><a data-spotlight href="https://discord.com/users/1480253947984740393" target="_blank" rel="noopener noreferrer" aria-label="Open Jackson.tech's Discord profile in a new tab"><span class="nv-team__index">02 / NT</span><span class="nv-team__role">Founder &amp; Marketer</span><strong>Jackson.tech</strong><span class="nv-team__handle">@jacksonkarli.</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
             <li><a data-spotlight href="https://discord.com/users/1033353984267800576" target="_blank" rel="noopener noreferrer" aria-label="Open SPOONFAM's Discord profile in a new tab"><span class="nv-team__index">03 / NT</span><span class="nv-team__role">Developer</span><strong>SPOONFAM</strong><span class="nv-team__handle">@spoonfam</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
             <li><a data-spotlight href="https://discord.com/users/1204912897499598941" target="_blank" rel="noopener noreferrer" aria-label="Open mathewingtonjsebaarionkingcrow's Discord profile in a new tab"><span class="nv-team__index">04 / NT</span><span class="nv-team__role">Team member</span><strong>mathewingtonjsebaarionkingcrow</strong><span class="nv-team__handle">@mathewingtonjsebaarionkingcrow</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
             <li><a data-spotlight href="https://discord.com/users/1469187539263815750" target="_blank" rel="noopener noreferrer" aria-label="Open Castle_Crashers's Discord profile in a new tab"><span class="nv-team__index">05 / NT</span><span class="nv-team__role">AI Developer</span><strong>Castle_Crashers</strong><span class="nv-team__handle">@Castle_crashers</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
+            <li><a data-spotlight href="https://discord.com/users/1139290691323838485" target="_blank" rel="noopener noreferrer" aria-label="Open easportz_69_82115’s Discord profile in a new tab"><span class="nv-team__index">06 / NT</span><span class="nv-team__role">Marketer</span><strong>Loji</strong><span class="nv-team__handle">@easportz_69_82115</span><span class="nv-team__link">Discord profile <i aria-hidden="true">↗</i></span></a></li>
           </ul>
         </div>
       </section>
