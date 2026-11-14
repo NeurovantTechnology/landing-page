@@ -60,13 +60,11 @@ body {
   overflow-x: clip;
   background-color: var(--color-bg);
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(195, 169, 255, 0.48) 0 1px, rgba(195, 169, 255, 0.14) 1.2px, transparent 4px),
-    linear-gradient(rgba(195, 169, 255, 0.085) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(195, 169, 255, 0.085) 1px, transparent 1px),
-    radial-gradient(ellipse 80% 45% at 50% 0%, rgba(164, 119, 226, 0.12), transparent 100%);
-  background-size: 56px 56px, 56px 56px, 56px 56px, 100% 100%;
-  background-position: 0 0, 0 0, 0 0, center top;
-  background-repeat: repeat, repeat, repeat, no-repeat;
+    radial-gradient(ellipse 76% 48% at 50% 0%, rgba(160, 98, 235, 0.34), transparent 74%),
+    radial-gradient(ellipse 46% 40% at 100% 30%, rgba(126, 75, 187, 0.2), transparent 78%),
+    radial-gradient(ellipse 50% 42% at 0% 78%, rgba(104, 65, 164, 0.16), transparent 80%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 1rem;

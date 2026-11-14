@@ -48,8 +48,16 @@ export function mountNeurovantHomepage(rootElement) {
     </header>
 
     <main class="nv-main" id="main">
+      <section class="nv-hero" id="top" aria-labelledby="hero-title">
+        <div class="nv-hero__content">
+          <h1 id="hero-title">Intelligence for<br><span>what comes next.</span></h1>
+          <p>We explore practical ways technology can support attention, movement, and everyday routines through high-performance applications for desktop and mobile.</p>
+          <div class="nv-hero__actions" data-hero-actions></div>
+        </div>
+      </section>
+
       <div class="nv-logo-scroll-track" data-logo-scroll-track>
-        <section class="nv-logo-intro" id="top" data-logo-intro aria-label="Neurovant Technology logo reveal">
+        <section class="nv-logo-intro" id="brand-mark" data-logo-intro aria-label="Neurovant Technology logo reveal">
           <div class="nv-logo-intro__mark" aria-hidden="true">
             <div class="nv-logo-intro__fill-mask" data-logo-fill>
               <img class="nv-logo-intro__fill" src="/neurovant-logo.png" alt="" width="1254" height="1254">
@@ -67,14 +75,6 @@ export function mountNeurovantHomepage(rootElement) {
           </div>
         </section>
       </div>
-
-      <section class="nv-hero" id="hero" aria-labelledby="hero-title">
-        <div class="nv-hero__content">
-          <h1 id="hero-title">Intelligence for<br><span>what comes next.</span></h1>
-          <p>We explore practical ways technology can support attention, movement, and everyday routines through high-performance applications for desktop and mobile.</p>
-          <div class="nv-hero__actions" data-hero-actions></div>
-        </div>
-      </section>
 
       <section class="nv-section nv-project" id="projects" aria-labelledby="project-title">
         <div class="nv-shell">
