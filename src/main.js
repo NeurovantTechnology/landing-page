@@ -757,6 +757,4 @@ document.querySelectorAll('[data-year]').forEach((year) => {
 window.addEventListener('scroll', updateScrollState, { passive: true });
 window.addEventListener('resize', updateScrollState);
 reducedMotion.addEventListener?.('change', () => window.location.reload());
-const cleanupParticleWave = initParticleWave();
-window.addEventListener('beforeunload', cleanupParticleWave, { once: true });
 updateScrollState();
