@@ -74,7 +74,7 @@
 
 @keyframes nv-logo-draw { to { stroke-dashoffset: 0; } }
 
-.nv-hero { position: relative; display: flex; min-height: max(48rem, min(100svh, 64rem)); flex-direction: column; align-items: center; justify-content: center; gap: clamp(0.85rem, 2.4vh, 1.5rem); padding: clamp(6rem, 10vh, 7.5rem) 1.25rem clamp(1.5rem, 3vh, 2.25rem); text-align: center; }
+.nv-hero { position: relative; display: flex; min-height: max(48rem, min(100svh, 64rem)); flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(0.85rem, 2.4vh, 1.5rem); padding: clamp(6rem, 10vh, 7.5rem) 1.25rem clamp(1.5rem, 3vh, 2.25rem); text-align: center; }
 .nv-hero__content { width: min(100%, 66rem); }
 .nv-hero h1 { margin: 0 auto 1.55rem; font-size: clamp(3rem, 8.5vw, 7rem); font-weight: 600; letter-spacing: -0.075em; line-height: 0.95; text-wrap: balance; }
 .nv-hero h1 span { color: #d7ceff; }
