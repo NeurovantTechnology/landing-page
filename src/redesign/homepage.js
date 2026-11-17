@@ -254,7 +254,8 @@ export function mountNeurovantHomepage(rootElement) {
   const folderMount = rootElement.querySelector('[data-project-folder-root]');
   if (folderMount instanceof HTMLElement) mountNeuroPortalFolder(folderMount);
 
-  const missionControlMount = rootElement.querySelector('[data-mission-control-status]');
+  // Mount on the whole section so the summary and workflow cards share one live feed.
+  const missionControlMount = rootElement.querySelector('.nv-mission-control');
   if (missionControlMount instanceof HTMLElement) mountMissionControlStatus(missionControlMount);
 
   rootElement.addEventListener('pointermove', (event) => {
