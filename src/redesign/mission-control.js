@@ -140,6 +140,13 @@ export function mountMissionControlStatus(rootElement) {
       const detail = card.querySelector('[data-mc-detail]');
       const state = card.querySelector('[data-mc-state]');
       const label = card.querySelector('[data-mc-label]');
+      if (!hasSnapshot || refreshError || !feedConnected) {
+        if (detail) detail.textContent = hasSnapshot ? 'Live status unavailable' : 'Waiting for the live status feed';
+        if (state) state.textContent = hasSnapshot || refreshError ? 'Reconnecting' : 'Connecting';
+        card.dataset.state = 'disconnected';
+        card.dataset.presence = 'inactive';
+        continue;
+      }
       if (!row) {
         if (detail) detail.textContent = 'Status unavailable';
         if (state) state.textContent = 'Unavailable';
