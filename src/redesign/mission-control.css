@@ -110,6 +110,14 @@
   box-shadow: 0 0 0.75rem rgba(255, 143, 122, 0.55);
 }
 
+.nv-mission-control__hours {
+  margin: 0 0 0.55rem;
+  color: var(--mc-accent);
+  font: 500 0.64rem/1.4 "DM Mono", monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .nv-mission-control__readout strong {
   display: block;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
@@ -202,6 +210,22 @@
   animation: nv-mc-work 0.8s ease-in-out infinite alternate;
 }
 
+.nv-mission-control__card[data-presence="available"] .nv-mission-control__avatar {
+  animation: nv-mc-presence 3.2s ease-in-out infinite;
+}
+
+.nv-mission-control__card[data-presence="available"] .nv-mission-control__avatar i {
+  animation: nv-mc-blink 5.2s linear infinite;
+}
+
+.nv-mission-control__card[data-presence="available"] .nv-mission-control__avatar i:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.nv-mission-control__card[data-presence="available"] .nv-mission-control__state {
+  color: var(--mc-accent);
+}
+
 .nv-mission-control__card-copy {
   display: grid;
   gap: 0.25rem;
@@ -254,6 +278,16 @@
 
 @keyframes nv-mc-work {
   to { transform: translateY(-0.12rem) rotate(-2deg); }
+}
+
+@keyframes nv-mc-presence {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.08rem); }
+}
+
+@keyframes nv-mc-blink {
+  0%, 44%, 48%, 100% { transform: scaleY(1); }
+  46% { transform: scaleY(0.12); }
 }
 
 @media (max-width: 800px) {
