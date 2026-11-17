@@ -16,6 +16,25 @@ const workflowOrder = [
   'website',
 ];
 const staleAfterMs = 30 * 60 * 1000;
+const officeHoursFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  weekday: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function isOfficeOpen(timestamp) {
+  const parts = Object.fromEntries(
+    officeHoursFormatter
+      .formatToParts(new Date(timestamp))
+      .filter(({ type }) => type !== 'literal')
+      .map(({ type, value }) => [type, value]),
+  );
+  const weekday = parts.weekday;
+  const minutes = Number(parts.hour) * 60 + Number(parts.minute);
+  return weekday !== 'Sat' && weekday !== 'Sun' && minutes >= 9 * 60 && minutes < 17 * 60;
+}
 
 function formatUpdatedAt(value) {
   const date = new Date(value);
@@ -32,6 +51,7 @@ export function mountMissionControlStatus(rootElement) {
   const headline = rootElement.querySelector('[data-mc-headline]');
   const message = rootElement.querySelector('[data-mc-message]');
   const updated = rootElement.querySelector('[data-mc-updated]');
+  const officeHours = rootElement.querySelector('[data-mc-office-hours]');
   const cards = new Map(
     [...rootElement.querySelectorAll('[data-mc-workflow]')]
       .map((card) => [card.dataset.mcWorkflow, card]),
@@ -65,6 +85,14 @@ export function mountMissionControlStatus(rootElement) {
 
   function render() {
     const now = Date.now();
+    const officeOpen = isOfficeOpen(now);
+    if (officeHours) {
+      officeHours.textContent = officeOpen
+        ? 'Office hours · Open · weekdays 9 AM–5 PM ET'
+        : 'Office hours · Closed · weekdays 9 AM–5 PM ET';
+    }
+    rootElement.dataset.officeHours = officeOpen ? 'open' : 'closed';
+
     const rowByKey = new Map(rows.map((row) => [row.workflow_key, row]));
     const missing = workflowOrder.filter((key) => !rowByKey.has(key));
     const working = rows.filter((row) => row.status === 'working' && now - Date.parse(row.updated_at) <= staleAfterMs);
@@ -100,7 +128,9 @@ export function mountMissionControlStatus(rootElement) {
     } else {
       rootElement.dataset.state = 'free';
       if (headline) headline.textContent = 'We are free for any work!';
-      if (message) message.textContent = 'All scheduled workflows are standing by.';
+      if (message) message.textContent = officeOpen
+        ? 'The team is available between live workflow runs.'
+        : 'All scheduled workflows are standing by.';
     }
 
     for (const workflowKey of workflowOrder) {
@@ -122,6 +152,8 @@ export function mountMissionControlStatus(rootElement) {
       const isStaleWorking = row.status === 'working' && !isFreshWorking;
       card.dataset.state = isFreshWorking ? 'working' : isStaleWorking ? 'delayed' : row.status;
 
+      card.dataset.presence = row.status === 'idle' && officeOpen ? 'available' : 'inactive';
+
       if (isFreshWorking) {
         if (detail) detail.textContent = row.station + ' · ' + row.activity;
         if (state) state.textContent = 'Working';
@@ -131,6 +163,9 @@ export function mountMissionControlStatus(rootElement) {
       } else if (row.status === 'failed') {
         if (detail) detail.textContent = 'Last update ' + formatUpdatedAt(row.updated_at);
         if (state) state.textContent = 'Needs attention';
+      } else if (row.status === 'idle' && officeOpen) {
+        if (detail) detail.textContent = 'Office Floor · Available for work';
+        if (state) state.textContent = 'Available';
       } else {
         if (detail) detail.textContent = 'Office Floor · Standing by';
         if (state) state.textContent = 'Standing by';
