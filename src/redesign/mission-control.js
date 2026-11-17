@@ -144,6 +144,7 @@ export function mountMissionControlStatus(rootElement) {
         if (detail) detail.textContent = 'Status unavailable';
         if (state) state.textContent = 'Unavailable';
         card.dataset.state = 'disconnected';
+        card.dataset.presence = 'inactive';
         continue;
       }
 
@@ -152,7 +153,13 @@ export function mountMissionControlStatus(rootElement) {
       const isStaleWorking = row.status === 'working' && !isFreshWorking;
       card.dataset.state = isFreshWorking ? 'working' : isStaleWorking ? 'delayed' : row.status;
 
-      card.dataset.presence = row.status === 'idle' && officeOpen ? 'available' : 'inactive';
+      const officeAvailable = row.status === 'idle'
+        && officeOpen
+        && hasSnapshot
+        && feedConnected
+        && !refreshError
+        && missing.length === 0;
+      card.dataset.presence = officeAvailable ? 'available' : 'inactive';
 
       if (isFreshWorking) {
         if (detail) detail.textContent = row.station + ' · ' + row.activity;
@@ -163,7 +170,7 @@ export function mountMissionControlStatus(rootElement) {
       } else if (row.status === 'failed') {
         if (detail) detail.textContent = 'Last update ' + formatUpdatedAt(row.updated_at);
         if (state) state.textContent = 'Needs attention';
-      } else if (row.status === 'idle' && officeOpen) {
+      } else if (officeAvailable) {
         if (detail) detail.textContent = 'Office Floor · Available for work';
         if (state) state.textContent = 'Available';
       } else {
