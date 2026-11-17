@@ -100,6 +100,7 @@ export function mountNeurovantHomepage(rootElement) {
                 <span class="nv-mission-control__dot" data-mc-dot aria-hidden="true"></span>
                 <span data-mc-connection>Connecting to the office…</span>
               </div>
+              <p class="nv-mission-control__hours" data-mc-office-hours></p>
               <strong data-mc-headline>Checking live status</strong>
               <p data-mc-message>Waiting for the scheduled workflow feed.</p>
               <time data-mc-updated></time>
@@ -115,7 +116,7 @@ export function mountNeurovantHomepage(rootElement) {
             <li class="nv-mission-control__card" data-mc-workflow="administration"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Administration review</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
             <li class="nv-mission-control__card" data-mc-workflow="website"><span class="nv-mission-control__avatar" aria-hidden="true"><i></i><i></i></span><span class="nv-mission-control__card-copy"><strong data-mc-label>Website upkeep</strong><small data-mc-detail>Office Floor · Standing by</small></span><span class="nv-mission-control__state" data-mc-state>Standing by</span></li>
           </ul>
-          <p class="nv-mission-control__note">Display-only activity. No messages, customer data, drafts, or private source text appear here.</p>
+          <p class="nv-mission-control__note">Workflow status reflects real runs. Office-hours motion is decorative; no private content appears here.</p>
         </div>
       </section>
 
