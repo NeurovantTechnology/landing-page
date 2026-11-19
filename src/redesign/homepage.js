@@ -196,8 +196,8 @@ export function mountNeurovantHomepage(rootElement) {
       <section class="nv-section nv-contact" id="contact" aria-labelledby="contact-title">
         <div class="nv-shell nv-contact__layout">
           <div class="nv-contact__copy">
-            <h2 id="contact-title">Stay close to<br>what comes next.</h2>
-            <p>Get a short note when a project is ready to share. You can also find Neurovant on Discord.</p>
+            <h2 id="contact-title">Join the NeuroPortal<br>waitlist.</h2>
+            <p>NeuroPortal is in development. Join the list for updates as we explore a clearer way to keep track of work scattered across apps.</p>
             <a class="nv-text-link" href="https://discord.gg/NQ3qjFDCMn" target="_blank" rel="noopener noreferrer">Join our Discord <span aria-hidden="true">↗</span></a>
           </div>
           <div class="nv-contact__community">
@@ -206,7 +206,7 @@ export function mountNeurovantHomepage(rootElement) {
               <p id="name-help">This name may appear on the referral leaderboard.</p>
               <input id="display-name" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="Your name" required aria-describedby="name-help form-status signup-note" aria-invalid="false">
               <label for="email">Email address</label>
-              <p id="email-help">We’ll email a sign-in link to verify your address.</p>
+              <p id="email-help">Check your email for a sign-in link to verify your signup.</p>
               <div class="nv-form__control">
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="email-help form-status signup-note" aria-invalid="false">
                 <button type="submit">Join the list <span aria-hidden="true">↗</span></button>
