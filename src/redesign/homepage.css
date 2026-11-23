@@ -258,7 +258,8 @@
 }
 
 @media (min-width: 80rem) {
-  .nv-contact__community { grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.82fr) minmax(11rem, 0.62fr); }
+  .nv-contact__layout { grid-template-columns: minmax(16rem, 0.55fr) minmax(0, 1.45fr); gap: clamp(2rem, 4vw, 4rem); }
+  .nv-contact__community { grid-template-columns: minmax(17rem, 1fr) minmax(14rem, 0.82fr) minmax(13rem, 0.85fr); }
   .nv-reward-card { grid-column: 3; grid-row: 1; }
 }
 
