@@ -11,17 +11,15 @@ The migrations have already been applied to project aepiokzkmpqralnvrkvv, and wa
 ## Remaining dashboard setup
 
 1. Sign in to the Supabase Dashboard at https://supabase.com/dashboard and open project aepiokzkmpqralnvrkvv.
-2. Under Authentication → URL Configuration, keep the Site URL set to the public landing page and add these Redirect URLs:
-   - http://localhost:5173/
-   - https://neurovant-technology.com/
-3. Under Authentication → Sign In / Providers → Email, verify email signup and email confirmation are enabled. The form uses Supabase email OTP/magic-link sign-in and redirects back to the current landing-page path.
+2. Under Authentication → URL Configuration, set the Site URL to `https://neurovant-technology.com/` and make sure it appears in Additional Redirect URLs. For local callback testing, optionally allow `http://localhost:5173/` as well.
+3. Under Authentication → Sign In / Providers → Email, verify email signup and email confirmation are enabled. The form uses Supabase email OTP/magic-link sign-in and redirects to the public landing-page origin (`https://neurovant-technology.com/`) so emails do not point to a temporary localhost address. The app shows a verified confirmation when the user returns and removes the access token from the address bar.
 4. Under Authentication → SMTP Settings, configure Neurovant's verified sender, host, port, and credentials. The Supabase default sender is only for testing; public launch requires your own SMTP provider. Test delivery to multiple email providers.
 5. The Pages workflow injects the project URL and publishable key at build time. The publishable key is designed for browser use and is protected by database RLS; do not use a secret/service-role key here.
 6. Keep all Supabase service-role and SMTP credentials out of GitHub and frontend code. Supabase's built-in SUPABASE_SERVICE_ROLE_KEY is used only inside the leaderboard Edge Function.
 
 ## Local development
 
-Copy .env.example to .env.local and set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to the same project values. .env.local is ignored by Git.
+Copy .env.example to .env.local and set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to the same project values. Leave `VITE_WAITLIST_REDIRECT_URL` set to the public site when you want verification emails to return to the live landing page. For local callback testing, set it to `http://localhost:5173/` and keep the local server running until you open the email. `.env.local` is ignored by Git.
 
 Run npm install, then npm run dev.
 

@@ -218,6 +218,7 @@
 .nv-form__control button:disabled { opacity: 0.6; cursor: wait; }
 .nv-form__status { min-height: 1.3rem; margin-top: 0.7rem; color: var(--color-accent-bright, #d7ceff); font-size: 0.73rem; }
 .nv-form__status[data-state="error"] { color: #ffadad; }
+.nv-form__status[data-state="success"] { color: var(--color-success, #80c59f); }
 .nv-form__privacy { margin-top: 0.45rem; color: var(--nv-faint); font-size: 0.66rem; line-height: 1.5; }
 .nv-form__referral { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--nv-line); }
 .nv-form__referral .nv-form__control input { flex: 1; }

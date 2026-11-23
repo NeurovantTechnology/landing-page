@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
-const viteEnv = /** @type {ImportMeta & {env: {VITE_SUPABASE_URL?: string, VITE_SUPABASE_PUBLISHABLE_KEY?: string}}} */ (import.meta).env;
+const viteEnv = /** @type {ImportMeta & {env: {VITE_SUPABASE_URL?: string, VITE_SUPABASE_PUBLISHABLE_KEY?: string, VITE_WAITLIST_REDIRECT_URL?: string}}} */ (import.meta).env;
 const supabaseUrl = viteEnv.VITE_SUPABASE_URL;
 const supabasePublishableKey = viteEnv.VITE_SUPABASE_PUBLISHABLE_KEY;
+const waitlistRedirectBase = viteEnv.VITE_WAITLIST_REDIRECT_URL || 'https://neurovant-technology.com/';
 const supabase = supabaseUrl && supabasePublishableKey
   ? createClient(supabaseUrl, supabasePublishableKey)
   : null;
@@ -25,6 +26,9 @@ const mobileNavigation = window.matchMedia('(max-width: 50rem)');
 const revealItems = [...document.querySelectorAll('[data-reveal]')];
 const contactForm = document.querySelector('[data-contact-form]');
 const formStatus = document.querySelector('#form-status');
+const authCallbackParams = new URLSearchParams(window.location.hash.slice(1));
+const authCallbackError = authCallbackParams.has('error') || authCallbackParams.has('error_code');
+let authCallbackPending = authCallbackError || authCallbackParams.has('access_token');
 const leaderboard = document.querySelector('[data-leaderboard]');
 const referralCodeInput = document.querySelector('[data-referral-code]');
 const referralPanel = document.querySelector('[data-referral-panel]');
@@ -81,15 +85,11 @@ async function showReferralLink(userId) {
   referralPanel.hidden = false;
 }
 
-if (supabase) {
-  supabase.auth.getSession().then(({ data }) => {
-    if (data.session?.user) showReferralLink(data.session.user.id);
-  });
-  supabase.auth.onAuthStateChange((_event, session) => {
-    if (session?.user) queueMicrotask(() => showReferralLink(session.user.id));
-  });
-}
 loadLeaderboard();
+
+function getWaitlistEmailRedirectUrl() {
+  return new URL('/', waitlistRedirectBase).toString();
+}
 
 function setProjectMenu(open, { focusFirst = false, returnFocus = false } = {}) {
   if (!(projectToggle instanceof HTMLButtonElement) || !(projectDropdown instanceof HTMLElement)) return;
@@ -245,6 +245,42 @@ function setFormMessage(message, state = '') {
   }
 }
 
+function handleAuthCallback(session) {
+  if (!authCallbackPending) return;
+
+  const isWaitlistUser = session?.user?.user_metadata?.signup_context === 'waitlist';
+  if (!authCallbackError && !session?.user) return;
+
+  if (authCallbackError) {
+    if (contactForm instanceof HTMLFormElement) contactForm.dataset.formState = 'error';
+    setFormMessage('That verification link could not be used. Request a new sign-in link from the waitlist form.', 'error');
+  } else if (isWaitlistUser) {
+    if (contactForm instanceof HTMLFormElement) contactForm.dataset.formState = 'success';
+    setFormMessage('Thank you for signing up on the waitlist! Your email is verified.', 'success');
+  }
+
+  authCallbackPending = false;
+  const shouldShowWaitlistForm = authCallbackError || isWaitlistUser;
+  const cleanUrl = `${window.location.pathname}${window.location.search}${shouldShowWaitlistForm ? '#contact' : ''}`;
+  window.history.replaceState(window.history.state, '', cleanUrl);
+
+  if (shouldShowWaitlistForm && contactForm instanceof HTMLElement) {
+    contactForm.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
+  }
+}
+
+if (supabase) {
+  supabase.auth.getSession().then(({ data }) => {
+    handleAuthCallback(data.session);
+    if (data.session?.user) showReferralLink(data.session.user.id);
+  });
+  supabase.auth.onAuthStateChange((_event, session) => {
+    handleAuthCallback(session);
+    if (session?.user) queueMicrotask(() => showReferralLink(session.user.id));
+  });
+}
+if (authCallbackError) handleAuthCallback(null);
+
 function clearFormError() {
   if (!(contactForm instanceof HTMLFormElement)) return;
   contactForm.removeAttribute('data-form-state');
@@ -319,7 +355,7 @@ contactForm?.addEventListener('submit', async (event) => {
       email: value,
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: window.location.origin + window.location.pathname,
+        emailRedirectTo: getWaitlistEmailRedirectUrl(),
         data: {
           signup_context: 'waitlist',
           display_name: name,
@@ -329,7 +365,7 @@ contactForm?.addEventListener('submit', async (event) => {
     });
     if (error) throw error;
     contactForm.dataset.formState = 'success';
-    setFormMessage('Check your email for a sign-in link. Your referral counts after you verify.', 'success');
+    setFormMessage('Thank you for signing up on the waitlist! Check your email to verify your address. Your referral counts after you verify.', 'success');
   } catch {
     contactForm.dataset.formState = 'error';
     setFormMessage('We could not save your email. Please try again.', 'error');
