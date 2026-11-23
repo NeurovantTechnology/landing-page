@@ -227,7 +227,7 @@
 .nv-leaderboard__eyebrow, .nv-leaderboard__cap { color: var(--nv-faint); font: 500 0.62rem/1.4 var(--font-mono, monospace); letter-spacing: 0.1em; text-transform: uppercase; }
 .nv-leaderboard h3 { margin-top: 0.45rem; font-size: 1.35rem; font-weight: 540; letter-spacing: -0.04em; }
 .nv-leaderboard__cap { padding: 0.35rem 0.5rem; border: 1px solid var(--nv-line); border-radius: 999px; white-space: nowrap; }
-.nv-leaderboard__reward { margin-top: 1rem; padding: 0.75rem 0.85rem; border: 1px solid rgba(181, 165, 255, 0.2); border-radius: 0.65rem; background: rgba(181, 165, 255, 0.08); color: var(--nv-ink); font-size: 0.74rem; line-height: 1.55; }
+.nv-reward-card { grid-column: 2; grid-row: 2; align-self: start; padding: 0.75rem 0.85rem; border: 1px solid rgba(181, 165, 255, 0.2); border-radius: 0.65rem; background: rgba(181, 165, 255, 0.08); color: var(--nv-ink); font-size: 0.74rem; line-height: 1.55; }
 .nv-leaderboard__list { display: grid; gap: 0; max-height: 22rem; margin: 1.2rem 0 0; padding: 0; overflow: auto; list-style: none; }
 .nv-leaderboard__row { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto; align-items: center; gap: 0.55rem; min-height: 2.65rem; border-top: 1px solid var(--nv-line); font-size: 0.76rem; }
 .nv-leaderboard__rank { color: var(--nv-faint); font-family: var(--font-mono, monospace); font-size: 0.65rem; }
@@ -257,6 +257,11 @@
   .nv-footer__main { flex-wrap: wrap; }
 }
 
+@media (min-width: 80rem) {
+  .nv-contact__community { grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.82fr) minmax(11rem, 0.62fr); }
+  .nv-reward-card { grid-column: 3; grid-row: 1; }
+}
+
 @media (max-width: 50rem) {
   .nv-header { top: 1.5rem; width: calc(100% - 1.25rem); }
   .nv-header__inner { min-height: 3.6rem; }
@@ -278,6 +283,7 @@
   .nv-hero__actions { margin-top: 1.25rem; }
   .nv-hero h1 { font-size: clamp(3rem, 11.7vw, 5.3rem); }
   .nv-project__layout, .nv-about__layout, .nv-contact__layout, .nv-contact__community { grid-template-columns: 1fr; }
+  .nv-reward-card { grid-column: auto; grid-row: auto; }
   .nv-project__layout { gap: 2.75rem; }
   .nv-about__layout { gap: 2.5rem; }
   .nv-focus { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }

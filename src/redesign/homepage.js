@@ -227,12 +227,14 @@ export function mountNeurovantHomepage(rootElement) {
                 <div><p class="nv-leaderboard__eyebrow">The community</p><h3 id="leaderboard-title">Referral leaderboard</h3></div>
                 <span class="nv-leaderboard__cap">TOP 50</span>
               </div>
-              <p class="nv-leaderboard__reward">Top 3 by verified referrals qualify for rewards. We’ll announce the date once the leaderboard starts filling.</p>
               <ol class="nv-leaderboard__list" data-leaderboard aria-live="polite">
                 <li class="nv-leaderboard__empty">Loading the leaderboard…</li>
               </ol>
               <p class="nv-leaderboard__note">Only verified signups count.</p>
             </section>
+            <aside class="nv-reward-card" aria-label="Referral rewards">
+              Top 3 by verified referrals qualify for rewards. We’ll announce the date once the leaderboard starts filling.
+            </aside>
           </div>
         </div>
       </section>
