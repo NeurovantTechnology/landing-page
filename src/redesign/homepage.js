@@ -1,5 +1,4 @@
 import './homepage.css';
-import { mountNeuroPortalFolder } from './project-folder.tsx';
 import { mountHeroActions } from './hero-actions.tsx';
 import { mountMissionControlStatus } from './mission-control.js';
 
@@ -82,7 +81,11 @@ export function mountNeurovantHomepage(rootElement) {
               <a class="nv-text-link" href="./projects/neurofit/">View project <span aria-hidden="true">↗</span></a>
             </div>
 
-            <div data-project-folder-root></div>
+            <ul class="nv-project-info" aria-label="NeuroPortal areas of focus">
+              <li><span>01 / Platform</span><h3>Desktop<br>&amp; mobile</h3></li>
+              <li><span>02 / Themes</span><h3>Attention,<br>movement, routines</h3></li>
+              <li><span>03 / Measure</span><h3>Useful in<br>everyday life</h3></li>
+            </ul>
           </div>
         </div>
       </section>
@@ -254,9 +257,6 @@ export function mountNeurovantHomepage(rootElement) {
 
   const heroActions = rootElement.querySelector('[data-hero-actions]');
   if (heroActions instanceof HTMLElement) mountHeroActions(heroActions);
-
-  const folderMount = rootElement.querySelector('[data-project-folder-root]');
-  if (folderMount instanceof HTMLElement) mountNeuroPortalFolder(folderMount);
 
   // Mount on the whole section so the summary and workflow cards share one live feed.
   const missionControlMount = rootElement.querySelector('.nv-mission-control');
